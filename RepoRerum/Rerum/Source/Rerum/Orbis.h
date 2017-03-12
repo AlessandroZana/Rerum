@@ -68,6 +68,8 @@ class RERUM_API UOrbis : public UActorComponent
 	UInputComponent* InputComponent = nullptr;
 	UPlatformMoviment* PlatformPressed;
 
+	
+
 public:	
 	// Sets default values for this component's properties
 	UOrbis();
@@ -132,5 +134,6 @@ public:
 
 	bool IsOnDash = false;
 	float MaxTimeDash;
+	bool HaUsatoIlDash = false;//NON TOCCARE PORCO IL DIO
 
 };

@@ -42,6 +42,9 @@ public:
 	UPROPERTY(EditAnywhere)
 		float LowZPosition=430;//posizione asse z minimo della telecamera
 
+	UPROPERTY(EditAnywhere)
+		float VelocitaDizoomOutTelecamera = 15;//Velocità dello spostamento/zoom out telecamera
+
 private:
 
 	bool CantBlockit = false;//booleano che gestisce il controllo dello zoom 
