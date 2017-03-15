@@ -160,6 +160,15 @@ void UOrbis::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 			AlreadyJump = true;
 		}
 	}
+	if (HaUsatoIlDash == true)
+	{
+		if (AlreadyJump == false && player->GetCharacterMovement()->GravityScale != 2.0f && OnDash == true)
+		{
+			player->GetCharacterMovement()->GravityScale = 2.0f;
+			OnDash = false;
+			HaUsatoIlDash = false;
+		}
+	}
 	//bozza per il max dash
 	/*if (IsOnDash == true)
 	{
@@ -171,7 +180,7 @@ void UOrbis::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 			IsOnDash = false;
 		}
 	}*/
-
+	
 	// ...
 }
 
@@ -305,51 +314,55 @@ void UOrbis::CharacterOnDash()
 				if (StopFalling())
 				{
 					player->GetCharacterMovement()->GravityScale = FallingForce;
+					HaUsatoIlDash = true;
 				}
 				else
 				{
 					player->GetCharacterMovement()->GravityScale = 2.0f;
 					OnDash = false;
+					HaUsatoIlDash = false;
 				}
 			}
 			else//se il player si trova a terra
 			{
-
-				if (StopRunCharacter())
+				if (HaUsatoIlDash == false)
 				{
-					
-					DisableInput();//blueprint che disabilita input
-					player->GetCharacterMovement()->MaxWalkSpeed = 2000;
-					player->AddMovementInput(PlayerDirection, 100);
-					AlreadyJump = false;//per evitare che esegua sia l'azione in aria che l'azione a terra
-					if (CanDoIt == false)//Candoit è il booleano che si occupa di gestire la corsa
+					if (StopRunCharacter())
 					{
-				
-						CanDoIt = true;
-						RealTimeRun = GetWorld()->GetTimeSeconds();
-					}
 
-				}
-				else//la corsa si blocca se si tocca un ostacolo che non si può rompere
-				{
-					EnableInput();//blueprint che abilita input
-					player->AddMovementInput(FVector(0.f, 0.f, 0.f), 100);
-					player->GetCharacterMovement()->MaxWalkSpeed = 400;
-					//settaggio dei booleani per poter rieseguire dinuovo la corsa
-					OnDash = false;
-					CanDoIt = false;
-					DelayOnRun = true;
-					
-				}
-				if (DelayOnRun == false)//la corsa si blocca superand il time massimo
-				{
-					EnableInput();//blueprint che abilita input
-					player->AddMovementInput(FVector(0.f, 0.f, 0.f), 100);
-					player->GetCharacterMovement()->MaxWalkSpeed = 400;
-					//settaggio dei booleani per poter rieseguire dinuovo la corsa
-					OnDash = false;
-					CanDoIt = false;
-					DelayOnRun = true;
+						DisableInput();//blueprint che disabilita input
+						player->GetCharacterMovement()->MaxWalkSpeed = 2000;
+						player->AddMovementInput(PlayerDirection, 100);
+						AlreadyJump = false;//per evitare che esegua sia l'azione in aria che l'azione a terra
+						if (CanDoIt == false)//Candoit è il booleano che si occupa di gestire la corsa
+						{
+
+							CanDoIt = true;
+							RealTimeRun = GetWorld()->GetTimeSeconds();
+						}
+
+					}
+					else//la corsa si blocca se si tocca un ostacolo che non si può rompere
+					{
+						EnableInput();//blueprint che abilita input
+						player->AddMovementInput(FVector(0.f, 0.f, 0.f), 100);
+						player->GetCharacterMovement()->MaxWalkSpeed = 400;
+						//settaggio dei booleani per poter rieseguire dinuovo la corsa
+						OnDash = false;
+						CanDoIt = false;
+						DelayOnRun = true;
+
+					}
+					if (DelayOnRun == false)//la corsa si blocca superand il time massimo
+					{
+						EnableInput();//blueprint che abilita input
+						player->AddMovementInput(FVector(0.f, 0.f, 0.f), 100);
+						player->GetCharacterMovement()->MaxWalkSpeed = 400;
+						//settaggio dei booleani per poter rieseguire dinuovo la corsa
+						OnDash = false;
+						CanDoIt = false;
+						DelayOnRun = true;
+					}
 				}
 			}
 
@@ -496,6 +509,7 @@ bool UOrbis::StopRunCharacter()//funzione che gestisce gli impatti frontali del 
 {
 	bool result = false;
 	FHitResult Hit;
+	UE_LOG(LogTemp, Warning, TEXT("FUNZIONE CORSA"));
 
 	FCollisionQueryParams TraceParametres(FName(TEXT("")),
 		                                  false,
@@ -507,7 +521,9 @@ bool UOrbis::StopRunCharacter()//funzione che gestisce gli impatti frontali del 
 		                                        FCollisionObjectQueryParams(ECollisionChannel::ECC_WorldDynamic),
 		                                        TraceParametres))
 	{
+		UE_LOG(LogTemp, Warning, TEXT("FUNZIONE dynamic"));
 		result = false;//nel caso del retunr false il player continua a correre siccome non impatta con nulla di indistruttibile
+		
 	}
 	else if (GetWorld()->LineTraceSingleByObjectType(Hit,
 		                                             StartLine(),
@@ -515,12 +531,13 @@ bool UOrbis::StopRunCharacter()//funzione che gestisce gli impatti frontali del 
 		                                             FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody),
 		                                             TraceParametres))
 	{
+		UE_LOG(LogTemp, Warning, TEXT("FUNZIONE physic"));
 		result = false;//nel caso del retunr false il player continua a correre siccome non impatta con nulla di indistruttibile
 	}
 	
 	else
 	{
-		
+		UE_LOG(LogTemp, Warning, TEXT("FUNZIONE true"));
 		result = true;//nel caso di retunr del true vuol dire che abbiamo impattato con qualcosa di non distruttibile pertanto la corsa termina
 	}
 	
@@ -532,6 +549,8 @@ bool UOrbis::StopRunCharacter()//funzione che gestisce gli impatti frontali del 
 	{
 		Hit.GetActor()->Destroy();
 	}
+
+	
 
 	return result;
 }

@@ -33,7 +33,7 @@ void UCamera::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompone
 	if (CantBlockit)//if che gestisce lo zoom in e zoom out della telecamere
 	{
 		//UE_LOG(LogTemp, Warning, TEXT("CantBlockIt = true "));
-		positionY +=50;//aumento costante di distanza della telecamere in modo da non dare lo scatto
+		positionY += VelocitaDizoomOutTelecamera;//aumento costante di distanza della telecamere in modo da non dare lo scatto
 		if (positionY > CameraY + MaxCameraZoomOut)
 		{
 			positionY = CameraY + MaxCameraZoomOut;
