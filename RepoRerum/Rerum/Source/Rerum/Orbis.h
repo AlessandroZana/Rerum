@@ -7,7 +7,6 @@
 #include "Components/ActorComponent.h"
 #include "Orbis.generated.h"
 
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEvents);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -67,9 +66,7 @@ class RERUM_API UOrbis : public UActorComponent
 	ACharacter* player;
 	UInputComponent* InputComponent = nullptr;
 	UPlatformMoviment* PlatformPressed;
-
 	
-
 public:	
 	// Sets default values for this component's properties
 	UOrbis();
