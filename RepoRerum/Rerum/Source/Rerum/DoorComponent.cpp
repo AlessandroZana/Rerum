@@ -102,9 +102,9 @@ void UDoorComponent::TickComponent( float DeltaTime, ELevelTick TickType, FActor
 			if (CanBeDestroy == false)
 			{
 				//stampa della porta e del numero di pulsanti relativi a quella porta
-				UE_LOG(LogTemp,Warning,TEXT("Porta : %s"),*GetOwner()->GetName())
+				/*UE_LOG(LogTemp,Warning,TEXT("Porta : %s"),*GetOwner()->GetName())
 				UE_LOG(LogTemp, Warning, TEXT(" Numero di pulsanti %d"), Count);
-				UE_LOG(LogTemp, Warning, TEXT(" Numero di pulsanti premuti %d"), Pressed);
+				UE_LOG(LogTemp, Warning, TEXT(" Numero di pulsanti premuti %d"), Pressed);*/
 			}
 			if (Pressed > 0)
 			{

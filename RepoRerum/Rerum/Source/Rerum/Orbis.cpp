@@ -140,11 +140,11 @@ void UOrbis::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 		10.f);
 	if (CanJumpIsUp)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Può usare jetpack"));
+		//UE_LOG(LogTemp, Warning, TEXT("Può usare jetpack"));
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Non Può usare jetpack"));
+		//UE_LOG(LogTemp, Warning, TEXT("Non Può usare jetpack"));
 	}
 	if (!player->GetCharacterMovement()->IsFalling())//se il player non sta cadendo settiamo il can jump a false
 	{
@@ -534,10 +534,8 @@ bool UOrbis::StopRunCharacter()//funzione che gestisce gli impatti frontali del 
 		UE_LOG(LogTemp, Warning, TEXT("FUNZIONE physic"));
 		result = false;//nel caso del retunr false il player continua a correre siccome non impatta con nulla di indistruttibile
 	}
-	
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("FUNZIONE true"));
 		result = true;//nel caso di retunr del true vuol dire che abbiamo impattato con qualcosa di non distruttibile pertanto la corsa termina
 	}
 	
@@ -547,6 +545,7 @@ bool UOrbis::StopRunCharacter()//funzione che gestisce gli impatti frontali del 
 		                                        FCollisionObjectQueryParams(ECollisionChannel::ECC_WorldStatic),
 		                                        TraceParametres))
 	{
+		UE_LOG(LogTemp, Warning, TEXT("FUNZIONE Static"));
 		Hit.GetActor()->Destroy();
 	}
 
@@ -665,7 +664,7 @@ bool UOrbis::StopFalling()//funzione che gestisce la caduta incontrollata del pl
 
 void UOrbis::CharacterHitTrigger()
 {
-	FHitResult Hit;
+	/*FHitResult Hit;
 
 	FCollisionQueryParams TraceParametres(FName(TEXT("")),
 		false,
@@ -674,8 +673,11 @@ void UOrbis::CharacterHitTrigger()
 	if (GetWorld()->LineTraceSingleByObjectType(Hit,
 		StartLine(),
 		EndLineStopRun(),
-		FCollisionObjectQueryParams(ECollisionChannel::ECC_WorldDynamic),
+		FCollisionObjectQueryParams(ECollisionChannel::ECC_Visibility),
 		TraceParametres))
+	{
+		UE_LOG(LogTemp, Warning, TEXT(" %s"), *Hit.GetActor()->GetName());
+	}
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Hittato %s"),*Hit.GetActor()->GetName());
 		if (Hit.GetActor()->ActorHasTag("Trigger"))
@@ -697,6 +699,6 @@ void UOrbis::CharacterHitTrigger()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Hittato nulla"));
 		AlreadyTriggered = true;
-	}
+	}*/
 
 }
