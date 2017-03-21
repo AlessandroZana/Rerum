@@ -3,7 +3,6 @@
 #pragma once
 #include "Camera.h"
 #include "PlatformMoviment.h"
-#include "C:/Program Files/Epic Games/UE_4.14/Engine/Source/Runtime/Engine/Classes/PhysicsEngine/PhysicsThrusterComponent.h"
 #include "RerumCharacter.h"
 #include "Components/ActorComponent.h"
 #include "Orbis.generated.h"
@@ -67,7 +66,7 @@ class RERUM_API UOrbis : public UActorComponent
 	ACharacter* player;
 	UInputComponent* InputComponent = nullptr;
 	UPlatformMoviment* PlatformPressed;
-	UPhysicsThrusterComponent* jetpack = nullptr;
+	
 public:	
 	// Sets default values for this component's properties
 	UOrbis();

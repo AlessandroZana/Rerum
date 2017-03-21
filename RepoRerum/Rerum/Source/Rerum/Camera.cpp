@@ -77,7 +77,7 @@ void UCamera::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompone
 				
 				//UE_LOG(LogTemp, Warning, TEXT("Posizione del player %s"), *player->GetActorLocation().ToString());
 
-				UE_LOG(LogTemp, Warning, TEXT("Posizione della telecamera %s"), *GetOwner()->GetActorLocation().ToString());
+			//	UE_LOG(LogTemp, Warning, TEXT("Posizione della telecamera %s"), *GetOwner()->GetActorLocation().ToString());
 
 				FVector Position = FVector(player->GetActorLocation().X, positionY, player->GetActorLocation().Z + 60);//si setta l'fvector che poi diventrà la nuova posizione della camera
 
@@ -97,7 +97,7 @@ void UCamera::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompone
 		{
 			CameraZoomOut();
 			
-			UE_LOG(LogTemp, Warning, TEXT("Posizione della telecamera %s"), *GetOwner()->GetActorLocation().ToString());
+			//UE_LOG(LogTemp, Warning, TEXT("Posizione della telecamera %s"), *GetOwner()->GetActorLocation().ToString());
 		}
 		
 	}
