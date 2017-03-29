@@ -40,7 +40,6 @@ class RERUM_API UOrbis : public UActorComponent
 	bool HeavyLightPlatform();//funzione che analizza le piattaforme sulle quali il player si trova
 
 	enum playerChangeState { HEAVY = 1, LIGHT };//Cambia lo stato da leggero a pesante
-	playerChangeState playerState;//Variabile che tiene conto dello state di orbis
 	
 	bool OnAir;//Booleano che controlla se si sta tenendo premuto o rilasciando il tasto
 	bool OnDash;//Booleano che controlla se il player ha iniziato il dash/corsa
@@ -70,7 +69,7 @@ class RERUM_API UOrbis : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UOrbis();
-
+	playerChangeState playerState;//Variabile che tiene conto dello state di orbis
 	virtual void BeginPlay() override;
 	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 	void EnableInput();//funzione che abilita gli input
@@ -132,5 +131,4 @@ public:
 	bool IsOnDash = false;
 	float MaxTimeDash;
 	bool HaUsatoIlDash = false;//NON TOCCARE PORCO IL DIO
-
 };

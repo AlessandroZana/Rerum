@@ -1,7 +1,6 @@
 // Copyright 1998-2016 Epic Games, Inc. All Rights Reserved.
 
 #pragma once
-#include "Orbis.h"
 #include "PaperCharacter.h"
 #include "RerumCharacter.generated.h"
 
@@ -13,8 +12,8 @@
 //   The capsule component (inherited from ACharacter) handles collision with the world
 //   The CharacterMovementComponent (inherited from ACharacter) handles movement of the collision capsule
 //   The Sprite component (inherited from APaperCharacter) handles the visuals
-
 class UTextRenderComponent;
+class UOrbis;
 
 UCLASS(config=Game)
 class ARerumCharacter : public APaperCharacter
@@ -32,17 +31,21 @@ class ARerumCharacter : public APaperCharacter
 
 	UTextRenderComponent* TextComponent;
 
+	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
-
 protected:
 
-	// The animation to play while running around
+	//Animazioni orbis leggero
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animations)
-		class UPaperFlipbook* RunningAnimation;
-
-	// The animation to play while idle (standing still)
+		class UPaperFlipbook* RunningAnimationLight;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animations)
-		class UPaperFlipbook* IdleAnimation;
+		class UPaperFlipbook* IdleAnimationLight;
+	
+	//Animazioni orbis pesante
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animations)
+		class UPaperFlipbook* RunningAnimationHeavy;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animations)
+		class UPaperFlipbook* IdleAnimationHeavy;
 
 	/** Called to choose the correct animation to play based on the character's movement state */
 	void UpdateAnimation();
@@ -61,10 +64,15 @@ protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 	// End of APawn interface
-
+	
+	//Puntatore alla classe Orbis
+	UOrbis* orbis = nullptr;
 public:
 	ARerumCharacter();
-
+	
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void CastToOrbis(UOrbis* orbisComponent);
+	
 	/** Returns SideViewCameraComponent subobject **/
 	FORCEINLINE class UCameraComponent* GetSideViewCameraComponent() const { return SideViewCameraComponent; }
 	/** Returns CameraBoom subobject **/

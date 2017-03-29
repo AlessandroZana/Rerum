@@ -16,7 +16,6 @@ UOrbis::UOrbis()
 	// ...
 }
 
-
 // Called when the game starts
 void UOrbis::BeginPlay()
 {
@@ -39,7 +38,7 @@ void UOrbis::BeginPlay()
 	//Vettore sull asse z utilizzato nel linetrace per tenere conto della piattaforma di ricarica 
 	lineDirection = FVector(0.f, 0.f, 1.f);
 	//Lunghezza del linetrace
-	range = 150;
+	range = 250;
 	//Cast al character
 	player = Cast<ARerumCharacter>(GetOwner());
 	//Binding dei tasti
@@ -425,6 +424,7 @@ void UOrbis::ChangeHeavyLight()//Funzione che cambia forma di orbis
 		break;
 	//Se è leggero diventa pesante
 	case LIGHT:
+		player->Jump();
 		playerState = HEAVY;
 		//modifiche delle statistiche del player
 		player->GetCharacterMovement()->MaxWalkSpeed = 400;

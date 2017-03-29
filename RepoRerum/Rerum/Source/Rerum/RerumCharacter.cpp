@@ -2,6 +2,7 @@
 
 #include "Rerum.h"
 #include "RerumCharacter.h"
+#include "Orbis.h"
 #include "PaperFlipbookComponent.h"
 #include "Components/TextRenderComponent.h"
 
@@ -71,6 +72,18 @@ ARerumCharacter::ARerumCharacter()
 	bReplicates = true;
 }
 
+void ARerumCharacter::CastToOrbis(UOrbis* orbisComponent)
+{
+	orbis = orbisComponent;
+	if (orbis)
+	{
+		UE_LOG(LogTemp,Warning,TEXT("Orbis found"))
+	}
+	else
+	{
+		UE_LOG(LogTemp,Warning,TEXT("Orbis not found"))
+	}
+}
 //////////////////////////////////////////////////////////////////////////
 // Animation
 
@@ -78,15 +91,32 @@ void ARerumCharacter::UpdateAnimation()
 {
 	const FVector PlayerVelocity = GetVelocity();
 	const float PlayerSpeedSqr = PlayerVelocity.SizeSquared();
-
-	// Are we moving or standing still?
-	UPaperFlipbook* DesiredAnimation = (PlayerSpeedSqr > 0.0f) ? RunningAnimation : IdleAnimation;
-	if( GetSprite()->GetFlipbook() != DesiredAnimation 	)
+	if (orbis->playerState == 2)
 	{
-		GetSprite()->SetFlipbook(DesiredAnimation);
+		UPaperFlipbook* DesiredAnimationLight = (PlayerSpeedSqr > 0.0f) ? RunningAnimationLight : IdleAnimationLight;
+		if (GetSprite()->GetFlipbook() != DesiredAnimationLight)
+		{
+			GetSprite()->SetFlipbook(DesiredAnimationLight);
+			GetCapsuleComponent()->SetCapsuleHalfHeight(96.0f);
+			GetCapsuleComponent()->SetCapsuleRadius(40.0f);
+		}
+	}
+	else if(orbis->playerState == 1)
+	{
+		UPaperFlipbook* DesiredAnimationHeavy = (PlayerSpeedSqr > 0.0f) ? RunningAnimationHeavy : IdleAnimationHeavy;
+		if (GetSprite()->GetFlipbook() != DesiredAnimationHeavy)
+		{
+			GetSprite()->SetFlipbook(DesiredAnimationHeavy);
+			GetCapsuleComponent()->SetCapsuleHalfHeight(200.0f);
+			GetCapsuleComponent()->SetCapsuleRadius(40.0f);
+		}
 	}
 }
 
+void ARerumCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+}
 //Tick
 void ARerumCharacter::Tick(float DeltaSeconds)
 {
