@@ -107,6 +107,13 @@ void ARerumCharacter::UpdateAnimation()
 		if (GetSprite()->GetFlipbook() != DesiredAnimationHeavy)
 		{
 			GetSprite()->SetFlipbook(DesiredAnimationHeavy);
+			if(orbis->checkCapsuleCollision)
+			{
+				getCapsulePosition = GetCapsuleComponent()->GetComponentLocation();
+				setcapsulePosition = FVector(getCapsulePosition.X, getCapsulePosition.Y, getCapsulePosition.Z+capsuleUp);
+				GetCapsuleComponent()->SetRelativeLocation(setcapsulePosition);
+				orbis->checkCapsuleCollision = false;
+			}
 			GetCapsuleComponent()->SetCapsuleHalfHeight(200.0f);
 			GetCapsuleComponent()->SetCapsuleRadius(40.0f);
 		}
@@ -116,6 +123,7 @@ void ARerumCharacter::UpdateAnimation()
 void ARerumCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	capsuleUp = 100.0;
 }
 //Tick
 void ARerumCharacter::Tick(float DeltaSeconds)

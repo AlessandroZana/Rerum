@@ -30,6 +30,10 @@ class ARerumCharacter : public APaperCharacter
 		class USpringArmComponent* CameraBoom;
 
 	UTextRenderComponent* TextComponent;
+	
+	FVector getCapsulePosition;
+	FVector setcapsulePosition;
+	float capsuleUp;
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
@@ -69,10 +73,9 @@ protected:
 	UOrbis* orbis = nullptr;
 public:
 	ARerumCharacter();
-	
+
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void CastToOrbis(UOrbis* orbisComponent);
-	
 	/** Returns SideViewCameraComponent subobject **/
 	FORCEINLINE class UCameraComponent* GetSideViewCameraComponent() const { return SideViewCameraComponent; }
 	/** Returns CameraBoom subobject **/

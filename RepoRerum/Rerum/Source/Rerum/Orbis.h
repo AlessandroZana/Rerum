@@ -131,4 +131,6 @@ public:
 	bool IsOnDash = false;
 	float MaxTimeDash;
 	bool HaUsatoIlDash = false;//NON TOCCARE PORCO IL DIO
+
+	bool checkCapsuleCollision;
 };

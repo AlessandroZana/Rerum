@@ -43,6 +43,8 @@ void UOrbis::BeginPlay()
 	player = Cast<ARerumCharacter>(GetOwner());
 	//Binding dei tasti
 	SetUpInputComponent();
+
+	bool checkCapsuleLocation = false;
 	
 }
 
@@ -424,7 +426,7 @@ void UOrbis::ChangeHeavyLight()//Funzione che cambia forma di orbis
 		break;
 	//Se è leggero diventa pesante
 	case LIGHT:
-		player->Jump();
+		checkCapsuleCollision = true;
 		playerState = HEAVY;
 		//modifiche delle statistiche del player
 		player->GetCharacterMovement()->MaxWalkSpeed = 400;
