@@ -65,11 +65,13 @@ class RERUM_API UOrbis : public UActorComponent
 	ACharacter* player;
 	UInputComponent* InputComponent = nullptr;
 	UPlatformMoviment* PlatformPressed;
-
-
-	
 	
 public:	
+
+	UFUNCTION(BluePrintCallable, Category = Coins)
+	void CoinsCerchio();
+	UFUNCTION(BluePrintCallable, Category = Coins)
+	void CoinsTriangolo();
 
 	float LastTimeJump;//float che contiene il tempo relativo all'ultimo uso del jetpack
 	float MinHeavy;//float che contiene il valore minimo di fuel per l'Heavy

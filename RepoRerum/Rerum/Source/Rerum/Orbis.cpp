@@ -190,8 +190,8 @@ void UOrbis::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 	{
 		if (LastTimeJump + 5 < GetWorld()->GetTimeSeconds())
 		{
-			heavyFuel++;
-			UE_LOG(LogTemp, Warning, TEXT("Heavy fuel si riempie"));
+			heavyFuel= heavyFuel + 0.05;
+			//UE_LOG(LogTemp, Warning, TEXT("Heavy fuel si riempie"));
 			if (heavyFuel > MinHeavy)
 			{
 				heavyFuel = MinHeavy;
@@ -202,9 +202,8 @@ void UOrbis::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 	{
 		if (LastTimeJump + 5 < GetWorld()->GetTimeSeconds())
 		{
-			lightFuel= lightFuel +0.1;
-			UE_LOG(LogTemp, Warning, TEXT("Light fuel si riempie"));
-			UE_LOG(LogTemp, Warning, TEXT("%f"), LastTimeJump);
+			lightFuel= lightFuel + 0.1;
+			//UE_LOG(LogTemp, Warning, TEXT("Light fuel si riempie"));
 			if (lightFuel > MinLight)
 			{
 				lightFuel = MinLight;
@@ -215,6 +214,7 @@ void UOrbis::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 	{
 		lightFuel = 0;
 	}
+	
 	//bozza per il max dash
 	/*if (IsOnDash == true)
 	{
@@ -560,7 +560,7 @@ bool UOrbis::StopRunCharacter()//funzione che gestisce gli impatti frontali del 
 {
 	bool result = false;
 	FHitResult Hit;
-	UE_LOG(LogTemp, Warning, TEXT("FUNZIONE CORSA"));
+	//UE_LOG(LogTemp, Warning, TEXT("FUNZIONE CORSA"));
 
 	FCollisionQueryParams TraceParametres(FName(TEXT("")),
 		                                  false,
@@ -572,8 +572,11 @@ bool UOrbis::StopRunCharacter()//funzione che gestisce gli impatti frontali del 
 		                                        FCollisionObjectQueryParams(ECollisionChannel::ECC_WorldDynamic),
 		                                        TraceParametres))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("FUNZIONE dynamic"));
-		result = false;//nel caso del retunr false il player continua a correre siccome non impatta con nulla di indistruttibile
+		
+		
+			//UE_LOG(LogTemp, Warning, TEXT("FUNZIONE dynamic"));
+			result = false;//nel caso del retunr false il player continua a correre siccome non impatta con nulla di indistruttibile
+		
 		
 	}
 	else if (GetWorld()->LineTraceSingleByObjectType(Hit,
@@ -582,7 +585,7 @@ bool UOrbis::StopRunCharacter()//funzione che gestisce gli impatti frontali del 
 		                                             FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody),
 		                                             TraceParametres))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("FUNZIONE physic"));
+		//UE_LOG(LogTemp, Warning, TEXT("FUNZIONE physic"));
 		result = false;//nel caso del retunr false il player continua a correre siccome non impatta con nulla di indistruttibile
 	}
 	else
@@ -596,7 +599,7 @@ bool UOrbis::StopRunCharacter()//funzione che gestisce gli impatti frontali del 
 		                                        FCollisionObjectQueryParams(ECollisionChannel::ECC_WorldStatic),
 		                                        TraceParametres))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("FUNZIONE Static"));
+		//UE_LOG(LogTemp, Warning, TEXT("FUNZIONE Static"));
 		Hit.GetActor()->Destroy();
 	}
 
@@ -683,8 +686,12 @@ bool UOrbis::StopFalling()//funzione che gestisce la caduta incontrollata del pl
 		                                        FCollisionObjectQueryParams(ECollisionChannel::ECC_WorldDynamic),
 		                                        TraceParametres))
 	{
-		AlreadyJump = false;//booleano di fine caduta
-		result = false;
+		
+		
+			AlreadyJump = false;//booleano di fine caduta
+			result = false;
+		
+	
 	}
 	else if (GetWorld()->LineTraceSingleByObjectType(Hit,
 		                                             StartLine(),
@@ -752,4 +759,23 @@ void UOrbis::CharacterHitTrigger()
 		AlreadyTriggered = true;
 	}*/
 
+}
+
+
+void UOrbis::CoinsCerchio()
+{
+	lightFuel = lightFuel + MinLight * 2;
+	if (lightFuel > lightFuelMax)
+	{
+		lightFuel = lightFuelMax;
+	}
+}
+
+void UOrbis::CoinsTriangolo()
+{
+	heavyFuel = heavyFuel + MinHeavy * 2;
+	if (heavyFuel > heavyFuelMax)
+	{
+		heavyFuel = heavyFuelMax;
+	}
 }
