@@ -65,8 +65,15 @@ class RERUM_API UOrbis : public UActorComponent
 	ACharacter* player;
 	UInputComponent* InputComponent = nullptr;
 	UPlatformMoviment* PlatformPressed;
+
+
+	
 	
 public:	
+
+	float LastTimeJump;//float che contiene il tempo relativo all'ultimo uso del jetpack
+	float MinHeavy;//float che contiene il valore minimo di fuel per l'Heavy
+	float MinLight;//float che contiene il valore minimo di fuel per il Light
 	// Sets default values for this component's properties
 	UOrbis();
 	playerChangeState playerState;//Variabile che tiene conto dello state di orbis

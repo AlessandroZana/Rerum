@@ -45,8 +45,9 @@ void UOrbis::BeginPlay()
 	SetUpInputComponent();
 
 	bool checkCapsuleLocation = false;
-	
-}
+	MinHeavy = heavyFuelMax / 10;
+	MinLight = lightFuelMax / 10;
+}  
 
 
 // Called every frame
@@ -116,9 +117,23 @@ void UOrbis::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 
 	if (ActorHit)//Se l' oggetto è la piattaforma  ricarica il fuel, se minore della quantità max
 	{
+		if (ActorHit->ActorHasTag("Triangolo"))
+		{
+			heavyFuel = MoreFuel(heavyFuel, heavyFuelMax);//Ricarico i fuel attraverso la funzione
+		}
+		else 
+			if (ActorHit->ActorHasTag("Cerchio"))
+			{
+				lightFuel = MoreFuel(lightFuel, lightFuelMax);//Ricarico i fuel attraverso la funzione
+			}else
+			{
+				//nel caso si lascia il vecchio recupero 
+				heavyFuel = MoreFuel(heavyFuel, heavyFuelMax);//Ricarico i fuel attraverso la funzione
+				lightFuel = MoreFuel(lightFuel, lightFuelMax);//Ricarico i fuel attraverso la funzione
+			}
 		
-		heavyFuel = MoreFuel(heavyFuel, heavyFuelMax);//Ricarico i fuel attraverso la funzione
-		lightFuel = MoreFuel(lightFuel, lightFuelMax);
+		
+		
 	}
 
 	//stampa a video della linea di impatto verso il basso
@@ -170,6 +185,36 @@ void UOrbis::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 			HaUsatoIlDash = false;
 		}
 	}
+
+	if (heavyFuel < MinHeavy)
+	{
+		if (LastTimeJump + 5 < GetWorld()->GetTimeSeconds())
+		{
+			heavyFuel++;
+			UE_LOG(LogTemp, Warning, TEXT("Heavy fuel si riempie"));
+			if (heavyFuel > MinHeavy)
+			{
+				heavyFuel = MinHeavy;
+			}
+		}
+	}
+	if (lightFuel < MinLight)
+	{
+		if (LastTimeJump + 5 < GetWorld()->GetTimeSeconds())
+		{
+			lightFuel= lightFuel +0.1;
+			UE_LOG(LogTemp, Warning, TEXT("Light fuel si riempie"));
+			UE_LOG(LogTemp, Warning, TEXT("%f"), LastTimeJump);
+			if (lightFuel > MinLight)
+			{
+				lightFuel = MinLight;
+			}
+		}
+	}
+	if (lightFuel < 0)
+	{
+		lightFuel = 0;
+	}
 	//bozza per il max dash
 	/*if (IsOnDash == true)
 	{
@@ -219,12 +264,14 @@ void UOrbis::IsOnAir()//serve ad evitare che con il salto semplice si attivi il 
 {
 	CanJumpIsUp = true;
 	AlreadyJump = true;
+	
 }
 
 void UOrbis::Fly()
 {
 	if (CanJumpIsUp)
 	{
+		
 		
 		if (heavyFuel > 0 && playerState == HEAVY)
 		{
@@ -233,6 +280,7 @@ void UOrbis::Fly()
 			//Boleano che controlla che Orbis sia in aria
 			AlreadyJump = true;
 			Camera->FindComponentByClass<UCamera>()->CameraZoomOut();//chiamata alla funzione zoomOut che serve per allontare la telecamera e simulure uno zoom verso fuori
+			LastTimeJump = GetWorld()->GetTimeSeconds();
 		}
 		else
 		{
@@ -243,6 +291,7 @@ void UOrbis::Fly()
 				//Boleano che controlla che Orbis sia in aria
 				AlreadyJump = true;
 				Camera->FindComponentByClass<UCamera>()->CameraZoomOut();//chiamata alla funzione zoomOut che serve per allontare la telecamera e simulure uno zoom verso fuori
+				LastTimeJump = GetWorld()->GetTimeSeconds();
 			}	
 		}
 	}
