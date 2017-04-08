@@ -71,6 +71,9 @@ class RERUM_API UOrbis : public UActorComponent
 	void SetJetpack();
 public:	
 
+	UPROPERTY(BlueprintReadWrite, Category = Default)
+	bool CanChangeStat = true;
+
 	UFUNCTION(BluePrintCallable, Category = Coins)
 	void CoinsCerchio();
 	UFUNCTION(BluePrintCallable, Category = Coins)
@@ -91,6 +94,12 @@ public:
 	//Forza del jetpack
 	UPROPERTY(EditAnywhere)
 	FVector JetpackForceL;//jetpack leggero
+
+	UPROPERTY(EditAnywhere)
+	FVector JetpackForceLFirstHit;//Jetpack leggero primo hit
+
+	FVector JetpackForceLxTime;
+
 	UPROPERTY(EditAnywhere)
 	FVector JetpackForceH;//jetpack pesante
 
