@@ -15,12 +15,24 @@ UOrbis::UOrbis()
 
 	// ...
 }
+void UOrbis::SetJetpack()
+{
+	jetpack = GetOwner()->FindComponentByClass<UPhysicsThrusterComponent>();
+	if (jetpack) 
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Jetpack Found"));
+	}
+	else
+	{
+		UE_LOG(LogTemp,Warning,TEXT("Jetpack not found"));
+	}
+}
 
 // Called when the game starts
 void UOrbis::BeginPlay()
 {
 	Super::BeginPlay();
-
+	SetJetpack();
 	//inizializzazione delle variabili per i delay dell salto e azione
 	RealTimeJump = GetWorld()->GetTimeSeconds();
 	RealTimeDash = GetWorld()->GetTimeSeconds();
