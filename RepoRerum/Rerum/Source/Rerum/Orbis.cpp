@@ -57,6 +57,7 @@ void UOrbis::BeginPlay()
 	SetUpInputComponent();
 
 	bool checkCapsuleLocation = false;
+	JetpackForceLxTime = JetpackForceLFirstHit;
 	MinHeavy = heavyFuelMax / 10;
 	MinLight = lightFuelMax / 10;
 }  
@@ -226,7 +227,13 @@ void UOrbis::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 	{
 		lightFuel = 0;
 	}
-	
+	if (CanJumpIsUp)
+	{
+		if (LastTimeJump + 1 < GetWorld()->GetTimeSeconds())
+		{
+			JetpackForceLxTime = JetpackForceL;
+		}
+	}
 	//bozza per il max dash
 	/*if (IsOnDash == true)
 	{
@@ -309,6 +316,7 @@ void UOrbis::Fly()
 	}
 	else
 	{
+		JetpackForceLxTime = JetpackForceLFirstHit;
 		IsOnAir();
 	}
 }
@@ -317,6 +325,7 @@ void UOrbis::NotFly()
 {
 	//Boleano che fa smettere di volare se rilasciato il tasto
 	OnAir = false;
+	JetpackForceLxTime = JetpackForceLFirstHit;
 
 }
 
@@ -443,7 +452,7 @@ void UOrbis::CharacterOnAir()
 
 			//Se il riferimento a character non è null uso la funzione launch per farlo volare
 			//Uso la force di Orbis leggero
-			player->LaunchCharacter(JetpackForceL, false, true);
+			player->LaunchCharacter(JetpackForceLxTime, false, true);
 			//Tolgo il fuel dal jetpack con la funzione
 			lightFuel = RemoveFuel(lightFuel);
 
@@ -480,18 +489,23 @@ void UOrbis::ChangeHeavyLight()//Funzione che cambia forma di orbis
 	{
 	//Se è pesante diventa leggero
 	case HEAVY:
-		playerState = LIGHT;
-		//modifiche delle statistiche del player
-		player->GetCharacterMovement()->MaxWalkSpeed = 600;
-		player->GetCharacterMovement()->GravityScale = 2;
+		
+			playerState = LIGHT;
+			//modifiche delle statistiche del player
+			player->GetCharacterMovement()->MaxWalkSpeed = 600;
+			player->GetCharacterMovement()->GravityScale = 2;
+		
 		break;
 	//Se è leggero diventa pesante
 	case LIGHT:
-		checkCapsuleCollision = true;
-		playerState = HEAVY;
-		//modifiche delle statistiche del player
-		player->GetCharacterMovement()->MaxWalkSpeed = 400;
-		player->GetCharacterMovement()->GravityScale = 2.5;
+		
+		
+			checkCapsuleCollision = true;
+			playerState = HEAVY;
+			//modifiche delle statistiche del player
+			player->GetCharacterMovement()->MaxWalkSpeed = 400;
+			player->GetCharacterMovement()->GravityScale = 2.5;
+		
 		break;
 
 	default:
