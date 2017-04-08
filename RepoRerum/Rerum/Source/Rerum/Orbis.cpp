@@ -147,7 +147,7 @@ void UOrbis::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 		
 	}
 
-	//stampa a video della linea di impatto verso il basso
+	/*//stampa a video della linea di impatto verso il basso
 	DrawDebugLine(GetWorld(),
 		StartLine(),//punto di partenza della linea
 		EndLine(),//punto di fine della linea
@@ -165,6 +165,7 @@ void UOrbis::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 		0.f,
 		0,
 		10.f);
+		*/
 	if (CanJumpIsUp)
 	{
 		//UE_LOG(LogTemp, Warning, TEXT("Può usare jetpack"));
@@ -583,11 +584,23 @@ bool UOrbis::StopRunCharacter()//funzione che gestisce gli impatti frontali del 
 		                                        FCollisionObjectQueryParams(ECollisionChannel::ECC_WorldDynamic),
 		                                        TraceParametres))
 	{
-		
-		
-			//UE_LOG(LogTemp, Warning, TEXT("FUNZIONE dynamic"));
-			result = false;//nel caso del retunr false il player continua a correre siccome non impatta con nulla di indistruttibile
-		
+		AActor* ActorHit = Hit.GetActor();
+		if (ActorHit->ActorHasTag("CoinsCerchio"))
+		{
+			result = true;
+
+		}
+		else
+			if (ActorHit->ActorHasTag("CoinsTriangolo"))
+			{
+				result = true;
+
+			}
+			else
+			{
+				//UE_LOG(LogTemp, Warning, TEXT("FUNZIONE dynamic"));
+				result = false;//nel caso del retunr false il player continua a correre siccome non impatta con nulla di indistruttibile
+			}
 		
 	}
 	else if (GetWorld()->LineTraceSingleByObjectType(Hit,
@@ -698,10 +711,28 @@ bool UOrbis::StopFalling()//funzione che gestisce la caduta incontrollata del pl
 		                                        TraceParametres))
 	{
 		
-		
-			AlreadyJump = false;//booleano di fine caduta
-			result = false;
-		
+		/*auto Object = Cast<UPrimitiveComponent>(Hit.GetActor()->GetRootComponent());
+		if (Object)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("non nullo"));
+		}*/
+		AActor* ActorHit = Hit.GetActor();
+		if (ActorHit->ActorHasTag("CoinsCerchio"))
+		{
+			result = true;
+
+		}
+		else
+			if (ActorHit->ActorHasTag("CoinsTriangolo"))
+			{
+				result = true;
+
+			}
+			else
+			{
+				AlreadyJump = false;//booleano di fine caduta
+				result = false;
+			}
 	
 	}
 	else if (GetWorld()->LineTraceSingleByObjectType(Hit,
