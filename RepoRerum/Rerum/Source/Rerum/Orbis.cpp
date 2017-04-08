@@ -98,7 +98,6 @@ void UOrbis::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 		{
 			CharacterOnAir();//Se sopra lo 0 posso volare e fare il dash
 			CharacterOnDash();
-
 		}
 		break;
 	//Orbis pesante
