@@ -5,6 +5,7 @@
 #include "PlatformMoviment.h"
 #include "RerumCharacter.h"
 #include "Components/ActorComponent.h"
+#include "PhysicsEngine/PhysicsThrusterComponent.h"
 #include "Orbis.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEvents);
@@ -66,6 +67,8 @@ class RERUM_API UOrbis : public UActorComponent
 	UInputComponent* InputComponent = nullptr;
 	UPlatformMoviment* PlatformPressed;
 	
+	UPhysicsThrusterComponent* jetpack = nullptr;
+	void SetJetpack();
 public:	
 
 	UFUNCTION(BluePrintCallable, Category = Coins)
