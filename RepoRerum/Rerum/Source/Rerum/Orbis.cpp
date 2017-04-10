@@ -615,6 +615,12 @@ bool UOrbis::StopRunCharacter()//funzione che gestisce gli impatti frontali del 
 
 			}
 			else
+			if (ActorHit->ActorHasTag("Leva"))
+			{
+				result = true;
+
+			}
+				else
 			{
 				//UE_LOG(LogTemp, Warning, TEXT("FUNZIONE dynamic"));
 				result = false;//nel caso del retunr false il player continua a correre siccome non impatta con nulla di indistruttibile
@@ -642,7 +648,12 @@ bool UOrbis::StopRunCharacter()//funzione che gestisce gli impatti frontali del 
 		                                        TraceParametres))
 	{
 		//UE_LOG(LogTemp, Warning, TEXT("FUNZIONE Static"));
-		Hit.GetActor()->Destroy();
+		if (!Hit.GetActor()->ActorHasTag("Leva"))
+		{
+			Hit.GetActor()->Destroy();
+
+		}
+		
 	}
 
 	
@@ -747,6 +758,12 @@ bool UOrbis::StopFalling()//funzione che gestisce la caduta incontrollata del pl
 
 			}
 			else
+				if (ActorHit->ActorHasTag("Leva"))
+				{
+					result = true;
+
+				}
+				else
 			{
 				AlreadyJump = false;//booleano di fine caduta
 				result = false;
@@ -774,7 +791,10 @@ bool UOrbis::StopFalling()//funzione che gestisce la caduta incontrollata del pl
 		                                        FCollisionObjectQueryParams(ECollisionChannel::ECC_WorldStatic),
 		                                        TraceParametres))
 	{
-		Hit.GetActor()->Destroy();
+		if (!Hit.GetActor()->ActorHasTag("Leva"))
+		{
+			Hit.GetActor()->Destroy();
+		}
 	}
 
 	return result;
