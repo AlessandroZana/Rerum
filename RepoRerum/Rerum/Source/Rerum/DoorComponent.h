@@ -52,6 +52,9 @@ public:
 	UPROPERTY(BluePrintAssignable)
 	FOpenDoor Open;//Evento che apre la porta
 
+	UFUNCTION(BluePrintCallable, Category = Default)
+	void OpenWithLeva();
+
 private:
 	int Count = 0;//contiene il numero di pulsanti da premere che varia da 1 a 3
 	int Pressed = 0;//contiene il numero di pulsanti premuti rispettando l'ordine stabilito

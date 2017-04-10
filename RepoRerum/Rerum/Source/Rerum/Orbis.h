@@ -14,7 +14,8 @@ UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class RERUM_API UOrbis : public UActorComponent
 {
 	GENERATED_BODY()
-	
+private:
+
 	void SetUpInputComponent();
 
 	void Fly();//Funzione richiamata dall evento pressed
@@ -148,10 +149,24 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = Default)
 	bool DelayOnJump = false;//boleano che determina il delay del jump del player
 
+public:
 
 	bool IsOnDash = false;
 	float MaxTimeDash;
 	bool HaUsatoIlDash = false;//NON TOCCARE PORCO IL DIO
 
 	bool checkCapsuleCollision;
+
+	void Action();//Funzione richiamata dall evento pressed
+	void NoAction();//Funzione richiamata dall evento released
+
+	UPROPERTY(BlueprintReadWrite, Category = Default)
+	bool CanUseAction = false;
+	
+	UPROPERTY(BlueprintReadWrite, Category = Default)
+	AActor * Leva = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, Category = Default)
+	bool CanChangeSpriteLeva = false;
+
 };
