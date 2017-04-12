@@ -186,4 +186,19 @@ void UDoorComponent::DelayDestroy()
 			
 	}
 }
+void UDoorComponent::OpenWithLeva()
+{
+	time = GetWorld()->GetTimeSeconds();//salvattaggio del tempo nella variabile time in modo da permettere la distruzione dopo un delay prestabilito
 
+	Open.Broadcast();
+	
+
+		Botton1 = nullptr;
+	
+		Botton2 = nullptr;
+	
+		Botton3 = nullptr;
+	
+		DelayDestroy();//chaiamta della funzione che distrugge le porte
+	
+}

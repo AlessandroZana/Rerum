@@ -229,7 +229,7 @@ void UOrbis::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 	}
 	if (CanJumpIsUp)
 	{
-		if (LastTimeJump + 1 < GetWorld()->GetTimeSeconds())
+		if (LastTimeJump + 0.5 < GetWorld()->GetTimeSeconds())
 		{
 			JetpackForceLxTime = JetpackForceL;
 		}
@@ -256,6 +256,8 @@ void UOrbis::SetUpInputComponent()
 
 	if (InputComponent)
 	{
+		InputComponent->BindAction("Action", IE_Pressed, this, &UOrbis::Action);//Action On
+		InputComponent->BindAction("Action", IE_Released, this, &UOrbis::NoAction);//Action Off
 		InputComponent->BindAction("Jetpack", IE_Pressed, this, &UOrbis::Fly);//Jetpack On
 		InputComponent->BindAction("Jetpack", IE_Released, this, &UOrbis::NotFly);//Jetpack Off
 		InputComponent->BindAction("ChangeState", IE_Pressed, this, &UOrbis::ChangeHeavyLight);//Cambio stato orbis
@@ -268,6 +270,8 @@ void UOrbis::SetUpInputComponent()
 		UE_LOG(LogTemp, Error, TEXT("%s Input Component not Found"), *GetOwner()->GetName());
 	}
 }
+
+
 
 void UOrbis::EnableInput()
 {
@@ -611,6 +615,12 @@ bool UOrbis::StopRunCharacter()//funzione che gestisce gli impatti frontali del 
 
 			}
 			else
+			if (ActorHit->ActorHasTag("Leva"))
+			{
+				result = true;
+
+			}
+				else
 			{
 				//UE_LOG(LogTemp, Warning, TEXT("FUNZIONE dynamic"));
 				result = false;//nel caso del retunr false il player continua a correre siccome non impatta con nulla di indistruttibile
@@ -638,7 +648,12 @@ bool UOrbis::StopRunCharacter()//funzione che gestisce gli impatti frontali del 
 		                                        TraceParametres))
 	{
 		//UE_LOG(LogTemp, Warning, TEXT("FUNZIONE Static"));
-		Hit.GetActor()->Destroy();
+		if (!Hit.GetActor()->ActorHasTag("Leva"))
+		{
+			Hit.GetActor()->Destroy();
+
+		}
+		
 	}
 
 	
@@ -743,6 +758,12 @@ bool UOrbis::StopFalling()//funzione che gestisce la caduta incontrollata del pl
 
 			}
 			else
+				if (ActorHit->ActorHasTag("Leva"))
+				{
+					result = true;
+
+				}
+				else
 			{
 				AlreadyJump = false;//booleano di fine caduta
 				result = false;
@@ -770,7 +791,10 @@ bool UOrbis::StopFalling()//funzione che gestisce la caduta incontrollata del pl
 		                                        FCollisionObjectQueryParams(ECollisionChannel::ECC_WorldStatic),
 		                                        TraceParametres))
 	{
-		Hit.GetActor()->Destroy();
+		if (!Hit.GetActor()->ActorHasTag("Leva"))
+		{
+			Hit.GetActor()->Destroy();
+		}
 	}
 
 	return result;
@@ -834,4 +858,29 @@ void UOrbis::CoinsTriangolo()
 	{
 		heavyFuel = heavyFuelMax;
 	}
+}
+
+void UOrbis::Action()
+{
+	if (CanUseAction)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Funzione action"));
+		if (Leva != nullptr)
+		{
+			
+			UE_LOG(LogTemp, Warning, TEXT("Utilizzo leva %s"), *Leva->GetName());
+			CanChangeSpriteLeva = true;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("non puoi usare Funzione action"));
+	}
+}
+
+void UOrbis::NoAction()
+{
+	
+
+	CanChangeSpriteLeva = false;
 }
