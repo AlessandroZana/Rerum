@@ -5,7 +5,6 @@
 #include "PlatformMoviment.h"
 #include "RerumCharacter.h"
 #include "Components/ActorComponent.h"
-#include "PhysicsEngine/PhysicsThrusterComponent.h"
 #include "Orbis.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEvents);
@@ -67,9 +66,6 @@ private:
 	ACharacter* player;
 	UInputComponent* InputComponent = nullptr;
 	UPlatformMoviment* PlatformPressed;
-	
-	UPhysicsThrusterComponent* jetpack = nullptr;
-	void SetJetpack();
 public:	
 
 	UPROPERTY(BlueprintReadWrite, Category = Default)
@@ -104,8 +100,10 @@ public:
 	UPROPERTY(EditAnywhere)
 	FVector JetpackForceH;//jetpack pesante
 
-	UPROPERTY(EditAnywhere)
-	FVector DashForce;//Forza del dash
+	UPROPERTY(EditAnywhere, category = Setup)
+	FVector DashForceOnGround;//Forza del dash a terra
+	UPROPERTY(EditAnywhere, category = Setup)
+	FVector DashForceOnAir;//Forza del dash in aria
 
 	UPROPERTY(EditAnywhere)
 	float MaxTimeRun = 2;//timing di delay corsa

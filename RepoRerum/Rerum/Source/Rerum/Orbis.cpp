@@ -15,24 +15,11 @@ UOrbis::UOrbis()
 
 	// ...
 }
-void UOrbis::SetJetpack()
-{
-	jetpack = GetOwner()->FindComponentByClass<UPhysicsThrusterComponent>();
-	if (jetpack) 
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Jetpack Found"));
-	}
-	else
-	{
-		UE_LOG(LogTemp,Warning,TEXT("Jetpack not found"));
-	}
-}
 
 // Called when the game starts
 void UOrbis::BeginPlay()
 {
 	Super::BeginPlay();
-	SetJetpack();
 	//inizializzazione delle variabili per i delay dell salto e azione
 	RealTimeJump = GetWorld()->GetTimeSeconds();
 	RealTimeDash = GetWorld()->GetTimeSeconds();
@@ -287,15 +274,12 @@ void UOrbis::IsOnAir()//serve ad evitare che con il salto semplice si attivi il 
 {
 	CanJumpIsUp = true;
 	AlreadyJump = true;
-	
 }
 
 void UOrbis::Fly()
 {
 	if (CanJumpIsUp)
 	{
-		
-		
 		if (heavyFuel > 0 && playerState == HEAVY)
 		{
 			//Boleano che permette di volare tenendo premuto un tasto
@@ -330,7 +314,6 @@ void UOrbis::NotFly()
 	//Boleano che fa smettere di volare se rilasciato il tasto
 	OnAir = false;
 	JetpackForceLxTime = JetpackForceLFirstHit;
-
 }
 
 void UOrbis::Dash()
@@ -360,8 +343,7 @@ void UOrbis::CharacterOnDash()
 				//se il player si trova in aria
 				if (OnAir == true || CanJumpIsUp == true)
 				{
-					FVector DashMoviment = PlayerDirection * DashForce;
-					//float clamp = FMath::Clamp<float>(DashMoviment, 0, 1000);
+					FVector DashMoviment = PlayerDirection * DashForceOnAir;
 					player->LaunchCharacter(DashMoviment, false, true);
 					IsOnDash = true;
 					OnDash = false;
@@ -369,7 +351,7 @@ void UOrbis::CharacterOnDash()
 				}
 				else//se il player si trova a terra
 				{
-					FVector DashMoviment = PlayerDirection * DashForce * 2;
+					FVector DashMoviment = PlayerDirection * DashForceOnGround;
 					player->LaunchCharacter(DashMoviment, false, true);
 					OnDash = false;
 				}
@@ -445,6 +427,7 @@ void UOrbis::CharacterOnDash()
 	}
 
 }
+
 //Funzione del jetpack
 void UOrbis::CharacterOnAir()
 {
@@ -453,13 +436,11 @@ void UOrbis::CharacterOnAir()
 		//Controlla se il character esiste
 		if (player)
 		{
-
 			//Se il riferimento a character non è null uso la funzione launch per farlo volare
 			//Uso la force di Orbis leggero
 			player->LaunchCharacter(JetpackForceLxTime, false, true);
 			//Tolgo il fuel dal jetpack con la funzione
 			lightFuel = RemoveFuel(lightFuel);
-
 		}
 	}
 
@@ -470,9 +451,7 @@ void UOrbis::CharacterOnAir()
 		{
 
 			if (DelayOnJump == false)
-			{
-				
-				
+			{	
 				DelayOnJump = true;//booleano che serve per evitare la ripetizione del jump 
 				RealTimeJump = GetWorld()->GetTimeSeconds();//presa del tempo in modo da far funzionare il delay sul jump
 			
@@ -493,7 +472,6 @@ void UOrbis::ChangeHeavyLight()//Funzione che cambia forma di orbis
 	{
 	//Se è pesante diventa leggero
 	case HEAVY:
-		
 			playerState = LIGHT;
 			//modifiche delle statistiche del player
 			player->GetCharacterMovement()->MaxWalkSpeed = 600;
@@ -502,8 +480,6 @@ void UOrbis::ChangeHeavyLight()//Funzione che cambia forma di orbis
 		break;
 	//Se è leggero diventa pesante
 	case LIGHT:
-		
-		
 			checkCapsuleCollision = true;
 			playerState = HEAVY;
 			//modifiche delle statistiche del player
@@ -538,6 +514,7 @@ float UOrbis::MoreFuel(float fuel, float fuelMax)
 	}
 	return fuel;
 }
+
 //Funzione che prende la location corrente dell' actor
 //Usata come vettore d' inzio del linetrace
 FVector UOrbis::StartLine()
@@ -558,6 +535,7 @@ FVector UOrbis::EndLine()
 	//Ritorno dove finisce il vector del linetrace
 	return lineEndDirection;
 }
+
 //Funzione che controlla se si sta su una piattaforma di ricarica
 FHitResult UOrbis::GetRechargePlatform()
 {
@@ -586,6 +564,7 @@ FVector UOrbis::EndLineStopRun()//funzione per l'aggiornamento della linea front
 	lineEndDirectionStopRun = actorLocation + lineDirectionStopRun * -range;
 	return lineEndDirectionStopRun;
 }
+
 bool UOrbis::StopRunCharacter()//funzione che gestisce gli impatti frontali del player
 {
 	bool result = false;
@@ -655,9 +634,6 @@ bool UOrbis::StopRunCharacter()//funzione che gestisce gli impatti frontali del 
 		}
 		
 	}
-
-	
-
 	return result;
 }
 
@@ -867,7 +843,6 @@ void UOrbis::Action()
 		UE_LOG(LogTemp, Warning, TEXT("Funzione action"));
 		if (Leva != nullptr)
 		{
-			
 			UE_LOG(LogTemp, Warning, TEXT("Utilizzo leva %s"), *Leva->GetName());
 			CanChangeSpriteLeva = true;
 		}
@@ -880,7 +855,5 @@ void UOrbis::Action()
 
 void UOrbis::NoAction()
 {
-	
-
 	CanChangeSpriteLeva = false;
 }
