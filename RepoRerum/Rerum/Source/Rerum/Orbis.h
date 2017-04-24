@@ -5,7 +5,6 @@
 #include "PlatformMoviment.h"
 #include "RerumCharacter.h"
 #include "Components/ActorComponent.h"
-#include "PhysicsEngine/PhysicsThrusterComponent.h"
 #include "Orbis.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEvents);
@@ -14,7 +13,8 @@ UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class RERUM_API UOrbis : public UActorComponent
 {
 	GENERATED_BODY()
-	
+private:
+
 	void SetUpInputComponent();
 
 	void Fly();//Funzione richiamata dall evento pressed
@@ -66,9 +66,6 @@ class RERUM_API UOrbis : public UActorComponent
 	ACharacter* player;
 	UInputComponent* InputComponent = nullptr;
 	UPlatformMoviment* PlatformPressed;
-	
-	UPhysicsThrusterComponent* jetpack = nullptr;
-	void SetJetpack();
 public:	
 
 	UPROPERTY(BlueprintReadWrite, Category = Default)
@@ -103,8 +100,10 @@ public:
 	UPROPERTY(EditAnywhere)
 	FVector JetpackForceH;//jetpack pesante
 
-	UPROPERTY(EditAnywhere)
-	FVector DashForce;//Forza del dash
+	UPROPERTY(EditAnywhere, category = Setup)
+	FVector DashForceOnGround;//Forza del dash a terra
+	UPROPERTY(EditAnywhere, category = Setup)
+	FVector DashForceOnAir;//Forza del dash in aria
 
 	UPROPERTY(EditAnywhere)
 	float MaxTimeRun = 2;//timing di delay corsa
@@ -148,10 +147,24 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = Default)
 	bool DelayOnJump = false;//boleano che determina il delay del jump del player
 
+public:
 
 	bool IsOnDash = false;
 	float MaxTimeDash;
 	bool HaUsatoIlDash = false;//NON TOCCARE PORCO IL DIO
 
 	bool checkCapsuleCollision;
+
+	void Action();//Funzione richiamata dall evento pressed
+	void NoAction();//Funzione richiamata dall evento released
+
+	UPROPERTY(BlueprintReadWrite, Category = Default)
+	bool CanUseAction = false;
+	
+	UPROPERTY(BlueprintReadWrite, Category = Default)
+	AActor * Leva = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, Category = Default)
+	bool CanChangeSpriteLeva = false;
+
 };
