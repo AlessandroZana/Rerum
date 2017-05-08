@@ -144,7 +144,7 @@ void UOrbis::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 		0.f,
 		0,
 		10.f);
-	//stampa a video della linea di impatto avanti costantemente aggiornata
+	stampa a video della linea di impatto avanti costantemente aggiornata
 	DrawDebugLine(GetWorld(),
 		StartLine(),//punto di partenza della linea
 		EndLineStopRun(),//punto di fine della linea
@@ -152,8 +152,7 @@ void UOrbis::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 		false,
 		0.f,
 		0,
-		10.f);
-		*/
+		10.f);*/
 	if (CanJumpIsUp)
 	{
 		//UE_LOG(LogTemp, Warning, TEXT("Può usare jetpack"));
@@ -167,6 +166,7 @@ void UOrbis::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 		CanJumpIsUp = false;//booleano che gestisce se il player è in volo o no 
 		Camera->FindComponentByClass<UCamera>()->CameraZoomIn();//chiamata della funzione zoomIn per far tornare la telecamere in modo normale
 		AlreadyJump = false;
+		CanDestroyUp = false;
 	}
 	if (player->GetCharacterMovement()->IsFalling())//se il player sta cadendo settiamo il can jump a true
 	{
@@ -221,6 +221,14 @@ void UOrbis::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 			JetpackForceLxTime = JetpackForceL;
 		}
 	}
+	if (lightFuel > lightFuelMax)
+	{
+		lightFuel = lightFuelMax;
+	}
+	if (heavyFuel > heavyFuelMax)
+	{
+		heavyFuel = heavyFuelMax;
+	}
 	//bozza per il max dash
 	/*if (IsOnDash == true)
 	{
@@ -250,6 +258,8 @@ void UOrbis::SetUpInputComponent()
 		InputComponent->BindAction("ChangeState", IE_Pressed, this, &UOrbis::ChangeHeavyLight);//Cambio stato orbis
 		InputComponent->BindAction("Dash", IE_Pressed, this, &UOrbis::Dash);//Dash
 		InputComponent->BindAction("Dash", IE_Released, this, &UOrbis::NotDash);//Dash
+		InputComponent->BindAction("DestroyUp", IE_Pressed, this, &UOrbis::DestroyUp);//DestroyUp On
+		
 	}
 	else
 	{
@@ -276,6 +286,49 @@ void UOrbis::IsOnAir()//serve ad evitare che con il salto semplice si attivi il 
 	AlreadyJump = true;
 }
 
+void UOrbis::DestroyUp()//serve ad evitare che con il salto semplice si attivi il jetpack
+{
+	FHitResult Hit;
+	actorLocation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
+
+	auto lineUpDirection = actorLocation + lineDirection * range;
+
+	DrawDebugLine(GetWorld(),
+		StartLine(),//punto di partenza della linea
+		lineUpDirection,//punto di fine della linea
+		FColor(255, 0, 0),//rosso
+		false,
+		0.f,
+		0,
+		10.f);
+	if (playerState == HEAVY)
+	{
+		if (CanDestroyUp == true)
+		{
+			UE_LOG(LogTemp, Warning, TEXT(" Rompo Oggetti up"));
+
+			
+
+			FCollisionQueryParams TraceParametres(FName(TEXT("")),
+												  false,
+												  GetOwner());
+			if (GetWorld()->LineTraceSingleByObjectType(Hit,
+												     	StartLine(),
+														lineUpDirection,
+			                                         	FCollisionObjectQueryParams(ECollisionChannel::ECC_WorldStatic),
+			                                         	TraceParametres))
+			{
+				if (Hit.GetActor())
+				{
+					Hit.GetActor()->Destroy();
+				}
+			}
+
+		}
+	}
+	
+}
+
 void UOrbis::Fly()
 {
 	if (CanJumpIsUp)
@@ -286,6 +339,7 @@ void UOrbis::Fly()
 			OnAir = true;
 			//Boleano che controlla che Orbis sia in aria
 			AlreadyJump = true;
+			CanDestroyUp = true;
 			Camera->FindComponentByClass<UCamera>()->CameraZoomOut();//chiamata alla funzione zoomOut che serve per allontare la telecamera e simulure uno zoom verso fuori
 			LastTimeJump = GetWorld()->GetTimeSeconds();
 		}

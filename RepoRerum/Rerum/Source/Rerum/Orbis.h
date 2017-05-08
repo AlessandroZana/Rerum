@@ -28,6 +28,7 @@ private:
 	void NotDash();//Funzione richiamata dall evento released shift
 	void CharacterOnDash();//Funzione per far dashare/correre il character
 	bool StopFalling();//funzione che distrugge oggetti e blocca il char durante caduta
+	void DestroyUp();//Funzione che distrugge oggetti verso l'alto durante jetpack forma pesante
 	FVector EndLineStopRun();//Funzione per fermare il player
 
 	void ChangeHeavyLight();//Funzione che cambia lo stato del player da heavy a light
@@ -66,6 +67,9 @@ private:
 	ACharacter* player;
 	UInputComponent* InputComponent = nullptr;
 	UPlatformMoviment* PlatformPressed;
+
+	
+
 public:	
 
 	UPROPERTY(BlueprintReadWrite, Category = Default)
@@ -167,4 +171,6 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = Default)
 	bool CanChangeSpriteLeva = false;
 
+
+	bool CanDestroyUp = false;
 };
