@@ -40,22 +40,30 @@ class ARerumCharacter : public APaperCharacter
 protected:
 
 	//Animazioni orbis leggero
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animations)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
 		class UPaperFlipbook* RunningAnimationLight;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animations)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
 		class UPaperFlipbook* IdleAnimationLight;
 	
 	//Animazioni orbis pesante
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animations)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
 		class UPaperFlipbook* RunningAnimationHeavy;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animations)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
 		class UPaperFlipbook* IdleAnimationHeavy;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animations)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
 		class UPaperFlipbook* trasformationToSenior;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animations)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
 		class UPaperFlipbook* trasformationToJunior;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
+		class UPaperFlipbook* DashHeavy;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
+		class UPaperFlipbook* JumpLight;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
+		class UPaperFlipbook* JetpackFlightLight;
 	/** Called to choose the correct animation to play based on the character's movement state */
 	void UpdateAnimation();
 

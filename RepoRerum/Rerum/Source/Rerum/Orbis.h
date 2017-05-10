@@ -38,13 +38,11 @@ private:
 	FVector StartLine();//Funzione che prende la location dell' actor
 	FVector EndLine();//Prende la fine del vettore costruito verso il basso per controllare la ricarica fuel
 	FHitResult GetRechargePlatform();//Funzione che controlla se si sta su una piattaforma di ricarica
-	bool StopRunCharacter();//funziona che distrugge oggetti e blocca il char durante la corsa
+	
 	bool HeavyLightPlatform();//funzione che analizza le piattaforme sulle quali il player si trova
 
 	enum playerChangeState { HEAVY = 1, LIGHT };//Cambia lo stato da leggero a pesante
 	
-	bool OnAir;//Booleano che controlla se si sta tenendo premuto o rilasciando il tasto
-	bool OnDash;//Booleano che controlla se il player ha iniziato il dash/corsa
 	bool AlreadyJump;//booleano che controlla se il player ha già saltato
 	
 	FVector actorLocation;//Prende la location di orbis
@@ -161,6 +159,7 @@ public:
 
 	void Action();//Funzione richiamata dall evento pressed
 	void NoAction();//Funzione richiamata dall evento released
+	bool StopRunCharacter();//funziona che distrugge oggetti e blocca il char durante la corsa
 
 	UPROPERTY(BlueprintReadWrite, Category = Default)
 	bool CanUseAction = false;
@@ -170,7 +169,7 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category = Default)
 	bool CanChangeSpriteLeva = false;
-
-
+	bool OnAir;//Booleano che controlla se si sta tenendo premuto o rilasciando il tasto
+	bool OnDash;//Booleano che controlla se il player ha iniziato il dash/corsa
 	bool CanDestroyUp = false;
 };

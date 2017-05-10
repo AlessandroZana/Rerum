@@ -93,30 +93,51 @@ void ARerumCharacter::UpdateAnimation()
 	const float PlayerSpeedSqr = PlayerVelocity.SizeSquared();
 	if (orbis->playerState == 2)
 	{
-		UPaperFlipbook* DesiredAnimationLight = (PlayerSpeedSqr > 0.0f) ? RunningAnimationLight : IdleAnimationLight;
-		if (GetSprite()->GetFlipbook() != DesiredAnimationLight)
+		GetCapsuleComponent()->SetCapsuleHalfHeight(96.0f);
+		GetCapsuleComponent()->SetCapsuleRadius(40.0f);
+		if (orbis->OnAir == true)
 		{
-			GetSprite()->SetFlipbook(DesiredAnimationLight);
-			GetCapsuleComponent()->SetCapsuleHalfHeight(96.0f);
-			GetCapsuleComponent()->SetCapsuleRadius(40.0f);
+			GetSprite()->SetFlipbook(JetpackFlightLight);
+		}
+		else if (PlayerSpeedSqr > 0.0f)
+		{
+			GetSprite()->SetFlipbook(RunningAnimationLight);
+		}
+		else
+		{
+			GetSprite()->SetFlipbook(IdleAnimationLight);
 		}
 	}
 	else if(orbis->playerState == 1)
 	{
-		UPaperFlipbook* DesiredAnimationHeavy = (PlayerSpeedSqr > 0.0f) ? RunningAnimationHeavy : IdleAnimationHeavy;
-		if (GetSprite()->GetFlipbook() != DesiredAnimationHeavy)
+		if (orbis->checkCapsuleCollision)
 		{
-			GetSprite()->SetFlipbook(DesiredAnimationHeavy);
-			if(orbis->checkCapsuleCollision)
-			{
-				getCapsulePosition = GetCapsuleComponent()->GetComponentLocation();
-				setcapsulePosition = FVector(getCapsulePosition.X, getCapsulePosition.Y, getCapsulePosition.Z+capsuleUp);
-				GetCapsuleComponent()->SetRelativeLocation(setcapsulePosition);
-				orbis->checkCapsuleCollision = false;
-			}
-			GetCapsuleComponent()->SetCapsuleHalfHeight(200.0f);
-			GetCapsuleComponent()->SetCapsuleRadius(40.0f);
+			getCapsulePosition = GetCapsuleComponent()->GetComponentLocation();
+			setcapsulePosition = FVector(getCapsulePosition.X, getCapsulePosition.Y, getCapsulePosition.Z + capsuleUp);
+			GetCapsuleComponent()->SetRelativeLocation(setcapsulePosition);
+			orbis->checkCapsuleCollision = false;
 		}
+		GetCapsuleComponent()->SetCapsuleHalfHeight(200.0f);
+		GetCapsuleComponent()->SetCapsuleRadius(40.0f);
+		//UPaperFlipbook* DesiredAnimationHeavy = (PlayerSpeedSqr > 0.0f) ? RunningAnimationHeavy : IdleAnimationHeavy;
+
+		//if (GetSprite()->GetFlipbook() != DesiredAnimationHeavy)
+		
+			if (orbis->OnDash == true && orbis->heavyFuel > 0.f)
+			{
+				GetSprite()->SetFlipbook(DashHeavy);
+			}
+			else if (PlayerSpeedSqr > 0.0f)
+			{
+				GetSprite()->SetFlipbook(RunningAnimationHeavy);
+			}
+			else
+			{
+				GetSprite()->SetFlipbook(IdleAnimationHeavy);
+			}
+
+			//GetSprite()->SetFlipbook(DesiredAnimationHeavy);
+		
 	}
 }
 
@@ -160,7 +181,6 @@ void ARerumCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, const FV
 	// jump on any touch
 	
 	Jump();
-	
 }
 
 void ARerumCharacter::TouchStopped(const ETouchIndex::Type FingerIndex, const FVector Location)
