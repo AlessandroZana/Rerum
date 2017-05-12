@@ -97,15 +97,15 @@ void ARerumCharacter::UpdateAnimation()
 		GetCapsuleComponent()->SetCapsuleRadius(40.0f);
 		if (orbis->OnAir == true)
 		{
-			GetSprite()->SetFlipbook(JetpackFlightLight);
+			GetSprite()->SetFlipbook(jetpackLight);
 		}
 		else if (PlayerSpeedSqr > 0.0f)
 		{
-			GetSprite()->SetFlipbook(RunningAnimationLight);
+			GetSprite()->SetFlipbook(walkLight);
 		}
 		else
 		{
-			GetSprite()->SetFlipbook(IdleAnimationLight);
+			GetSprite()->SetFlipbook(idleLight);
 		}
 	}
 	else if(orbis->playerState == 1)
@@ -119,25 +119,20 @@ void ARerumCharacter::UpdateAnimation()
 		}
 		GetCapsuleComponent()->SetCapsuleHalfHeight(200.0f);
 		GetCapsuleComponent()->SetCapsuleRadius(40.0f);
-		//UPaperFlipbook* DesiredAnimationHeavy = (PlayerSpeedSqr > 0.0f) ? RunningAnimationHeavy : IdleAnimationHeavy;
-
-		//if (GetSprite()->GetFlipbook() != DesiredAnimationHeavy)
 		
-			if (orbis->OnDash == true && orbis->heavyFuel > 0.f)
-			{
-				GetSprite()->SetFlipbook(DashHeavy);
-			}
-			else if (PlayerSpeedSqr > 0.0f)
-			{
-				GetSprite()->SetFlipbook(RunningAnimationHeavy);
-			}
-			else
-			{
-				GetSprite()->SetFlipbook(IdleAnimationHeavy);
-			}
+		if (orbis->OnDash == true && orbis->heavyFuel > 0.f)
+		{
+			GetSprite()->SetFlipbook(dashHeavy);
+		}
+		else if (PlayerSpeedSqr > 0.0f)
+		{
+			GetSprite()->SetFlipbook(walkHeavy);
+		}
+		else
+		{
+			GetSprite()->SetFlipbook(idleHeavy);
+		}
 
-			//GetSprite()->SetFlipbook(DesiredAnimationHeavy);
-		
 	}
 }
 

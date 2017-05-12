@@ -40,30 +40,23 @@ class ARerumCharacter : public APaperCharacter
 protected:
 
 	//Animazioni orbis leggero
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
-		class UPaperFlipbook* RunningAnimationLight;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
-		class UPaperFlipbook* IdleAnimationLight;
+	UPROPERTY(EditDefaultsOnly, Category = "Animations")
+	class UPaperFlipbook* walkLight;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animations")
+	class UPaperFlipbook* idleLight;
+	//UPROPERTY(EditDefaultsOnly, Category = "Animations")
+	//class UPaperFlipbook* JumpLight;
+	UPROPERTY(EditDefaultsOnly, Category = "Animations")
+	class UPaperFlipbook* jetpackLight;
 	
 	//Animazioni orbis pesante
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
-		class UPaperFlipbook* RunningAnimationHeavy;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
-		class UPaperFlipbook* IdleAnimationHeavy;
+	UPROPERTY(EditDefaultsOnly, Category = "Animations")
+	class UPaperFlipbook* walkHeavy;
+	UPROPERTY(EditDefaultsOnly, Category = "Animations")
+	class UPaperFlipbook* idleHeavy;
+	UPROPERTY(EditDefaultsOnly, Category = "Animations")
+	class UPaperFlipbook* dashHeavy;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
-		class UPaperFlipbook* trasformationToSenior;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
-		class UPaperFlipbook* trasformationToJunior;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
-		class UPaperFlipbook* DashHeavy;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
-		class UPaperFlipbook* JumpLight;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
-		class UPaperFlipbook* JetpackFlightLight;
 	/** Called to choose the correct animation to play based on the character's movement state */
 	void UpdateAnimation();
 
