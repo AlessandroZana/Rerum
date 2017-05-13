@@ -397,6 +397,7 @@ void UOrbis::CharacterOnDash()
 				//se il player si trova in aria
 				if (OnAir == true || CanJumpIsUp == true)
 				{
+					//airDashLightAnimation = true;
 					FVector DashMoviment = PlayerDirection * DashForceOnAir;
 					player->LaunchCharacter(DashMoviment, false, true);
 					IsOnDash = true;
@@ -409,6 +410,7 @@ void UOrbis::CharacterOnDash()
 					player->LaunchCharacter(DashMoviment, false, true);
 					OnDash = false;
 				}
+			//airDashLightAnimation = false;
 			DelayOnDash = true;//si setta il booleano del delay a true
 			RealTimeDash = GetWorld()->GetTimeSeconds();//si prende il tempo nel quale si è usato il dash in modo da poter calcolare il delay corretto
 			}

@@ -172,4 +172,6 @@ public:
 	bool OnAir;//Booleano che controlla se si sta tenendo premuto o rilasciando il tasto
 	bool OnDash;//Booleano che controlla se il player ha iniziato il dash/corsa
 	bool CanDestroyUp = false;
+
+	bool airDashLightAnimation;
 };

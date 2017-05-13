@@ -91,13 +91,26 @@ void ARerumCharacter::UpdateAnimation()
 {
 	const FVector PlayerVelocity = GetVelocity();
 	const float PlayerSpeedSqr = PlayerVelocity.SizeSquared();
+	float zVelocity = GetVelocity().Z;
 	if (orbis->playerState == 2)
 	{
 		GetCapsuleComponent()->SetCapsuleHalfHeight(96.0f);
 		GetCapsuleComponent()->SetCapsuleRadius(40.0f);
-		if (orbis->OnAir == true)
+		if (orbis->airDashLightAnimation == true)
 		{
-			GetSprite()->SetFlipbook(jetpackLight);
+			GetSprite()->SetFlipbook(airDashLight);
+		}
+		else if (zVelocity > 0.f)
+		{
+			GetSprite()->SetFlipbook(JumpLightUp);
+			if (orbis->OnAir == true)
+			{
+				GetSprite()->SetFlipbook(jetpackLight);
+			}
+		}
+		else if (zVelocity < 0.f)
+		{
+			GetSprite()->SetFlipbook(JumpLightDown);
 		}
 		else if (PlayerSpeedSqr > 0.0f)
 		{
@@ -123,6 +136,18 @@ void ARerumCharacter::UpdateAnimation()
 		if (orbis->OnDash == true && orbis->heavyFuel > 0.f)
 		{
 			GetSprite()->SetFlipbook(dashHeavy);
+		}
+		else if (zVelocity > 0.f)
+		{
+			GetSprite()->SetFlipbook(JumpHeavyUp);
+			if (orbis->OnAir == true)
+			{
+				GetSprite()->SetFlipbook(jetpackHeavy);
+			}
+		}
+		else if (zVelocity < 0.f)
+		{
+			GetSprite()->SetFlipbook(JumpHeavyDown);
 		}
 		else if (PlayerSpeedSqr > 0.0f)
 		{

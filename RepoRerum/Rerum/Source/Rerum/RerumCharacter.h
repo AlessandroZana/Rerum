@@ -44,16 +44,26 @@ protected:
 	class UPaperFlipbook* walkLight;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animations")
 	class UPaperFlipbook* idleLight;
-	//UPROPERTY(EditDefaultsOnly, Category = "Animations")
-	//class UPaperFlipbook* JumpLight;
+	UPROPERTY(EditDefaultsOnly, Category = "Animations")
+	class UPaperFlipbook* JumpLightUp;
+	UPROPERTY(EditDefaultsOnly, Category = "Animations")
+	class UPaperFlipbook* JumpLightDown;
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	class UPaperFlipbook* jetpackLight;
-	
+	UPROPERTY(EditDefaultsOnly, Category = "Animations")
+	class UPaperFlipbook* airDashLight;
+
 	//Animazioni orbis pesante
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	class UPaperFlipbook* walkHeavy;
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	class UPaperFlipbook* idleHeavy;
+	UPROPERTY(EditDefaultsOnly, Category = "Animations")
+	class UPaperFlipbook* JumpHeavyUp;
+	UPROPERTY(EditDefaultsOnly, Category = "Animations")
+	class UPaperFlipbook* JumpHeavyDown;
+	UPROPERTY(EditDefaultsOnly, Category = "Animations")
+	class UPaperFlipbook* jetpackHeavy;
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	class UPaperFlipbook* dashHeavy;
 
