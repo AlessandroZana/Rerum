@@ -45,9 +45,12 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	AActor* RightDoor;//nel caso di special door contiene l'anta di destra
-
+	
 	UPROPERTY(EditAnywhere)
-		float DelayPlatform = 20;//tempo dopo il quale le piattaforme non sono più premute
+	float destroyDoor = 4.f;//Tempo di delay per distruzione porta
+	
+	UPROPERTY(EditAnywhere)
+	float DelayPlatform = 20;//tempo dopo il quale le piattaforme non sono più premute
 
 	UPROPERTY(BluePrintAssignable)
 	FOpenDoor Open;//Evento che apre la porta
@@ -60,7 +63,6 @@ private:
 	int Pressed = 0;//contiene il numero di pulsanti premuti rispettando l'ordine stabilito
 
 	float delay2 = 0.8f;//Tempo di delay per distruzione porta
-	float delay1 = 4.f;//Tempo di delay per distruzione porta
 	float time ;
 	float time2;
 

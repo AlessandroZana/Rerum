@@ -179,7 +179,7 @@ void UDoorComponent::DelayDestroy()
 	
 	else
 	{
-		if (time + delay1 < GetWorld()->GetTimeSeconds())//nel caso di porta normale si distrugge una sola anta con un delay diverso
+		if (time + destroyDoor < GetWorld()->GetTimeSeconds())//nel caso di porta normale si distrugge una sola anta con un delay diverso
 		{
 			GetOwner()->Destroy();//distruzzione 1 anta
 		}
