@@ -337,6 +337,7 @@ void UOrbis::Fly()
 		{
 			//Boleano che permette di volare tenendo premuto un tasto
 			OnAir = true;
+			flyingState = EFlyingState::Flying;
 			//Boleano che controlla che Orbis sia in aria
 			AlreadyJump = true;
 			CanDestroyUp = true;
@@ -349,6 +350,7 @@ void UOrbis::Fly()
 			{
 				//Boleano che permette di volare tenendo premuto un tasto
 				OnAir = true;
+				flyingState = EFlyingState::Flying;
 				//Boleano che controlla che Orbis sia in aria
 				AlreadyJump = true;
 				Camera->FindComponentByClass<UCamera>()->CameraZoomOut();//chiamata alla funzione zoomOut che serve per allontare la telecamera e simulure uno zoom verso fuori
@@ -367,6 +369,7 @@ void UOrbis::NotFly()
 {
 	//Boleano che fa smettere di volare se rilasciato il tasto
 	OnAir = false;
+	flyingState = EFlyingState::NotFlying;
 	JetpackForceLxTime = JetpackForceLFirstHit;
 }
 
@@ -374,6 +377,7 @@ void UOrbis::Dash()
 {
 	//Var per attivare il dash di orbis
 	OnDash = true;
+	flyingState = EFlyingState::FlyingDash;
 }
 
 void UOrbis::NotDash()
@@ -382,6 +386,7 @@ void UOrbis::NotDash()
 	if (playerState == LIGHT)
 	{
 		OnDash = false;//attenzione questa funzione vale solo per la forma light in modo da risolvere il bug del dash
+		flyingState = EFlyingState::NotFlyingDash;
 	}
 }
 
@@ -397,7 +402,6 @@ void UOrbis::CharacterOnDash()
 				//se il player si trova in aria
 				if (OnAir == true || CanJumpIsUp == true)
 				{
-					//airDashLightAnimation = true;
 					FVector DashMoviment = PlayerDirection * DashForceOnAir;
 					player->LaunchCharacter(DashMoviment, false, true);
 					IsOnDash = true;
@@ -410,7 +414,6 @@ void UOrbis::CharacterOnDash()
 					player->LaunchCharacter(DashMoviment, false, true);
 					OnDash = false;
 				}
-			//airDashLightAnimation = false;
 			DelayOnDash = true;//si setta il booleano del delay a true
 			RealTimeDash = GetWorld()->GetTimeSeconds();//si prende il tempo nel quale si è usato il dash in modo da poter calcolare il delay corretto
 			}

@@ -96,21 +96,39 @@ void ARerumCharacter::UpdateAnimation()
 	{
 		GetCapsuleComponent()->SetCapsuleHalfHeight(96.0f);
 		GetCapsuleComponent()->SetCapsuleRadius(40.0f);
-		if (orbis->airDashLightAnimation == true)
+		if (GetCharacterMovement()->IsFalling())
 		{
-			GetSprite()->SetFlipbook(airDashLight);
-		}
-		else if (zVelocity > 0.f)
-		{
-			GetSprite()->SetFlipbook(JumpLightUp);
-			if (orbis->OnAir == true)
+			if (zVelocity > 0.f)
 			{
-				GetSprite()->SetFlipbook(jetpackLight);
+				if (orbis->flyingState == EFlyingState::NotFlying)
+				{
+					GetSprite()->SetFlipbook(jumpLightUp);
+				}
+				else if (orbis->flyingState == EFlyingState::Flying)
+				{
+					GetSprite()->SetFlipbook(jetpackLight);
+				}
+				else if (orbis->flyingState == EFlyingState::FlyingDash)
+				{
+					GetSprite()->SetFlipbook(airDashLight);
+				}
 			}
-		}
-		else if (zVelocity < 0.f)
-		{
-			GetSprite()->SetFlipbook(JumpLightDown);
+			else if (zVelocity < 0.f)
+			{
+				if (GetSprite()->GetFlipbook() == jumpLightUp)
+				{
+					UE_LOG(LogTemp,Warning,TEXT("Animation"))
+					GetSprite()->SetFlipbook(jumpLightDown);
+				}
+				else if (GetSprite()->GetFlipbook() == jetpackLight)
+				{
+					UE_LOG(LogTemp,Warning,TEXT("Jetpack"))
+				}
+				else if (orbis->flyingState == EFlyingState::FlyingDash)
+				{
+					GetSprite()->SetFlipbook(airDashLight);
+				}
+			}
 		}
 		else if (PlayerSpeedSqr > 0.0f)
 		{
@@ -137,22 +155,31 @@ void ARerumCharacter::UpdateAnimation()
 		{
 			GetSprite()->SetFlipbook(dashHeavy);
 		}
-		else if (zVelocity > 0.f)
+
+		else if (GetCharacterMovement()->IsFalling())
 		{
-			GetSprite()->SetFlipbook(JumpHeavyUp);
-			if (orbis->OnAir == true)
+			if (zVelocity > 0.f)
 			{
-				GetSprite()->SetFlipbook(jetpackHeavy);
+				if (orbis->flyingState == EFlyingState::NotFlying)
+				{
+					GetSprite()->SetFlipbook(jumpHeavyUp);
+				}
+				else if (orbis->flyingState == EFlyingState::Flying)
+				{
+					GetSprite()->SetFlipbook(jetpackHeavy);
+				}
+			}
+			else if (zVelocity < 0.f)
+			{
+				GetSprite()->SetFlipbook(jumpHeavyDown);
 			}
 		}
-		else if (zVelocity < 0.f)
-		{
-			GetSprite()->SetFlipbook(JumpHeavyDown);
-		}
+
 		else if (PlayerSpeedSqr > 0.0f)
 		{
 			GetSprite()->SetFlipbook(walkHeavy);
 		}
+
 		else
 		{
 			GetSprite()->SetFlipbook(idleHeavy);
@@ -169,7 +196,7 @@ void ARerumCharacter::BeginPlay()
 //Tick
 void ARerumCharacter::Tick(float DeltaSeconds)
 {
-	Super::Tick(DeltaSeconds);		   
+	Super::Tick(DeltaSeconds);
 	UpdateCharacter();
 }
 

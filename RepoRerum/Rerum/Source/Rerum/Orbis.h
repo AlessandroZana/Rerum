@@ -9,6 +9,15 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEvents);
 
+UENUM()
+enum class EFlyingState : uint8
+{
+	Flying,
+	NotFlying,
+	FlyingDash,
+	NotFlyingDash
+};
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class RERUM_API UOrbis : public UActorComponent
 {
@@ -173,5 +182,5 @@ public:
 	bool OnDash;//Booleano che controlla se il player ha iniziato il dash/corsa
 	bool CanDestroyUp = false;
 
-	bool airDashLightAnimation;
+	EFlyingState flyingState = EFlyingState::NotFlying;
 };

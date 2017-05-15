@@ -45,11 +45,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animations")
 	class UPaperFlipbook* idleLight;
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
-	class UPaperFlipbook* JumpLightUp;
+	class UPaperFlipbook* jumpLightUp;
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
-	class UPaperFlipbook* JumpLightDown;
+	class UPaperFlipbook* jumpLightDown;
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	class UPaperFlipbook* jetpackLight;
+	UPROPERTY(EditDefaultsOnly, Category = "Animations")
+	class UPaperFlipbook* jetpackLightDown;
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	class UPaperFlipbook* airDashLight;
 
@@ -59,9 +61,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	class UPaperFlipbook* idleHeavy;
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
-	class UPaperFlipbook* JumpHeavyUp;
+	class UPaperFlipbook* jumpHeavyUp;
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
-	class UPaperFlipbook* JumpHeavyDown;
+	class UPaperFlipbook* jumpHeavyDown;
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	class UPaperFlipbook* jetpackHeavy;
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
