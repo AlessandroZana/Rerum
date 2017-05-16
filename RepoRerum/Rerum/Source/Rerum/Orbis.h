@@ -152,6 +152,10 @@ public:
 	float heavyFuel;//Controlla la quantità di fuel in forma pesante
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Default)
 	float lightFuel;//Controlla la quantità di fuel in forma leggera
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Default)
+	float heavyfuelpercent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Default)
+	float lightfuelpercent;
 
 	UPROPERTY(BlueprintReadWrite, Category = Default)
 	bool DelayOnDash = false;//boleano che determina il delay del dash del player
