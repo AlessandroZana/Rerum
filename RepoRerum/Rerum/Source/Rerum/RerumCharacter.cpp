@@ -92,23 +92,25 @@ void ARerumCharacter::UpdateAnimation()
 	const FVector PlayerVelocity = GetVelocity();
 	const float PlayerSpeedSqr = PlayerVelocity.SizeSquared();
 	float zVelocity = GetVelocity().Z;
+	
 	if (orbis->playerState == 2)
 	{
 		GetCapsuleComponent()->SetCapsuleHalfHeight(96.0f);
 		GetCapsuleComponent()->SetCapsuleRadius(40.0f);
+
 		if (GetCharacterMovement()->IsFalling())
 		{
 			if (zVelocity > 0.f)
 			{
-				if (orbis->flyingState == EFlyingState::NotFlying)
+				if (orbis->state == EState::NotFlying)
 				{
 					GetSprite()->SetFlipbook(jumpLightUp);
 				}
-				else if (orbis->flyingState == EFlyingState::Flying)
+				else if (orbis->state == EState::Flying)
 				{
 					GetSprite()->SetFlipbook(jetpackLight);
 				}
-				else if (orbis->flyingState == EFlyingState::FlyingDash)
+				else if (orbis->state == EState::FlyingDash && orbis->lightFuel > 0.f)
 				{
 					GetSprite()->SetFlipbook(airDashLight);
 				}
@@ -124,7 +126,7 @@ void ARerumCharacter::UpdateAnimation()
 				{
 					UE_LOG(LogTemp,Warning,TEXT("Jetpack"))
 				}
-				else if (orbis->flyingState == EFlyingState::FlyingDash)
+				else if (orbis->state == EState::FlyingDash && orbis->lightFuel > 0.f)
 				{
 					GetSprite()->SetFlipbook(airDashLight);
 				}
@@ -151,20 +153,24 @@ void ARerumCharacter::UpdateAnimation()
 		GetCapsuleComponent()->SetCapsuleHalfHeight(200.0f);
 		GetCapsuleComponent()->SetCapsuleRadius(40.0f);
 		
-		if (orbis->OnDash == true && orbis->heavyFuel > 0.f)
+		if (orbis->OnDash == true && orbis->AlreadyJump == false && orbis->heavyFuel > 0.f)
 		{
 			GetSprite()->SetFlipbook(dashHeavy);
 		}
 
+		else if (orbis->StopFalling() && orbis->state == EState::FlyingDash && orbis->heavyFuel > 0.f)
+		{
+			GetSprite()->SetFlipbook(smashHeavy);
+		}
 		else if (GetCharacterMovement()->IsFalling())
 		{
 			if (zVelocity > 0.f)
 			{
-				if (orbis->flyingState == EFlyingState::NotFlying)
+				if (orbis->state == EState::NotFlying)
 				{
 					GetSprite()->SetFlipbook(jumpHeavyUp);
 				}
-				else if (orbis->flyingState == EFlyingState::Flying)
+				else if (orbis->state == EState::Flying)
 				{
 					GetSprite()->SetFlipbook(jetpackHeavy);
 				}

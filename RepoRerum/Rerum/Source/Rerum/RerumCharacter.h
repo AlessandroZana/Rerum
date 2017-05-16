@@ -68,6 +68,8 @@ protected:
 	class UPaperFlipbook* jetpackHeavy;
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	class UPaperFlipbook* dashHeavy;
+	UPROPERTY(EditDefaultsOnly, Category = "Animations")
+	class UPaperFlipbook* smashHeavy;
 
 	/** Called to choose the correct animation to play based on the character's movement state */
 	void UpdateAnimation();

@@ -10,12 +10,14 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEvents);
 
 UENUM()
-enum class EFlyingState : uint8
+enum class EState : uint8
 {
 	Flying,
 	NotFlying,
 	FlyingDash,
-	NotFlyingDash
+	NotFlyingDash,
+	SmashHeavy,
+	DashHeavy
 };
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -36,7 +38,6 @@ private:
 	void Dash();//Funzione richiamata dall evento pressed shift
 	void NotDash();//Funzione richiamata dall evento released shift
 	void CharacterOnDash();//Funzione per far dashare/correre il character
-	bool StopFalling();//funzione che distrugge oggetti e blocca il char durante caduta
 	void DestroyUp();//Funzione che distrugge oggetti verso l'alto durante jetpack forma pesante
 	FVector EndLineStopRun();//Funzione per fermare il player
 
@@ -51,8 +52,6 @@ private:
 	bool HeavyLightPlatform();//funzione che analizza le piattaforme sulle quali il player si trova
 
 	enum playerChangeState { HEAVY = 1, LIGHT };//Cambia lo stato da leggero a pesante
-	
-	bool AlreadyJump;//booleano che controlla se il player ha già saltato
 	
 	FVector actorLocation;//Prende la location di orbis
 	FVector lineDirection;//Vettore sull' asse Z , serve a prendere il vector per la piattaform di ricarica
@@ -148,6 +147,7 @@ public:
 
 	bool CanJumpIsUp = false;//booleano di supporto per il salto del player
 							 //Stanno in Public perchè li uso da blueprint per stamparli a schermo
+	bool AlreadyJump;//booleano che controlla se il player ha già saltato
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Default)
 	float heavyFuel;//Controlla la quantità di fuel in forma pesante
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Default)
@@ -182,5 +182,7 @@ public:
 	bool OnDash;//Booleano che controlla se il player ha iniziato il dash/corsa
 	bool CanDestroyUp = false;
 
-	EFlyingState flyingState = EFlyingState::NotFlying;
+	EState state = EState::NotFlying;
+	bool StopFalling();//funzione che distrugge oggetti e blocca il char durante caduta
+
 };
