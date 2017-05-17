@@ -158,10 +158,6 @@ void ARerumCharacter::UpdateAnimation()
 			GetSprite()->SetFlipbook(dashHeavy);
 		}
 
-		else if (orbis->StopFalling() && orbis->state == EState::FlyingDash && orbis->heavyFuel > 0.f)
-		{
-			GetSprite()->SetFlipbook(smashHeavy);
-		}
 		else if (GetCharacterMovement()->IsFalling())
 		{
 			if (zVelocity > 0.f)
@@ -177,7 +173,14 @@ void ARerumCharacter::UpdateAnimation()
 			}
 			else if (zVelocity < 0.f)
 			{
-				GetSprite()->SetFlipbook(jumpHeavyDown);
+				if (orbis->state != EState::FlyingDash)
+				{
+					GetSprite()->SetFlipbook(jumpHeavyDown);
+				}
+				if (orbis->StopFalling() && orbis->state == EState::FlyingDash && orbis->heavyFuel > 0.f)
+				{
+					GetSprite()->SetFlipbook(smashHeavy);
+				}
 			}
 		}
 
