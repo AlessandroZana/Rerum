@@ -168,7 +168,8 @@ public:
 	float MaxTimeDash;
 	bool HaUsatoIlDash = false;//NON TOCCARE PORCO IL DIO
 
-	bool checkCapsuleCollision;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Default)
+	bool checkCapsuleCollision = true;
 
 	void Action();//Funzione richiamata dall evento pressed
 	void NoAction();//Funzione richiamata dall evento released
@@ -182,11 +183,13 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category = Default)
 	bool CanChangeSpriteLeva = false;
-	bool OnAir;//Booleano che controlla se si sta tenendo premuto o rilasciando il tasto
-	bool OnDash;//Booleano che controlla se il player ha iniziato il dash/corsa
+	bool OnAir=false;//Booleano che controlla se si sta tenendo premuto o rilasciando il tasto
+	bool OnDash = false;//Booleano che controlla se il player ha iniziato il dash/corsa
 	bool CanDestroyUp = false;
 
 	EState state = EState::NotFlying;
 	bool StopFalling();//funzione che distrugge oggetti e blocca il char durante caduta
+
+	bool Svilupparty = false;
 
 };

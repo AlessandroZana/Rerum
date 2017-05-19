@@ -75,7 +75,6 @@ void UOrbis::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 	{
 		DelayOnDash = false;//se il tempo trascorso è maggiore del delay si setta a false in modo da permettere di dashare nuovamente
 	}
-	CharacterHitTrigger();
 	switch (playerState)//Switch che controlla se entrambe le forme possono usare il jetpack
 	{
 	//Orbis Leggero
@@ -84,6 +83,7 @@ void UOrbis::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 		Blue.Broadcast();
 		if (lightFuel >0)//Controllo quantita fuel leggero
 		{
+			//UE_LOG(LogTemp, Warning, TEXT(" on dash :%s"), (OnDash ? TEXT("True") : TEXT(" ")));
 			CharacterOnAir();//Se sopra lo 0 posso volare e fare il dash
 			CharacterOnDash();
 		}
@@ -94,6 +94,7 @@ void UOrbis::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 		Red.Broadcast();
 		if (heavyFuel > 0)//Controllo quantita fuel pesante
 		{
+			//UE_LOG(LogTemp, Warning, TEXT("on dash %s"), (OnDash ? TEXT("True") : TEXT(" ")));
 			CharacterOnAir();//Se sopra lo 0 posso volare e fare il dash
 			CharacterOnDash();
 		}
@@ -288,6 +289,7 @@ void UOrbis::IsOnAir()//serve ad evitare che con il salto semplice si attivi il 
 
 void UOrbis::DestroyUp()//serve ad evitare che con il salto semplice si attivi il jetpack
 {
+	if (Svilupparty == false) { return; }// da rimuovere finita fiera
 	FHitResult Hit;
 	actorLocation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
 
@@ -335,6 +337,7 @@ void UOrbis::Fly()
 	{
 		if (heavyFuel > 0 && playerState == HEAVY)
 		{
+			//if (Svilupparty == false) { return; }// da rimuovere finita fiera
 			//Boleano che permette di volare tenendo premuto un tasto
 			OnAir = true;
 			state = EState::Flying;
@@ -383,10 +386,10 @@ void UOrbis::Dash()
 void UOrbis::NotDash()
 {
 	//Var per disattivare il dash di orbis
-	if (playerState == LIGHT)
-	{
+	//if (playerState == LIGHT)
+	//{
 		OnDash = false;//attenzione questa funzione vale solo per la forma light in modo da risolvere il bug del dash
-	}
+	//}
 	state = EState::NotFlyingDash;
 }
 
@@ -420,66 +423,71 @@ void UOrbis::CharacterOnDash()
 		}
 	}
 	//funzine che gestisce nel caso il player sia in forma heavy
-	if (OnDash == true && playerState == HEAVY)
+	if (OnDash == true)
 	{
-		if (player)
+		if(playerState == HEAVY)
 		{
-			//se il player si trova in aria
-			if (AlreadyJump == true)
+			if (player)
 			{
-				if (StopFalling())
+				//se il player si trova in aria
+				if (AlreadyJump == true)
 				{
-					player->GetCharacterMovement()->GravityScale = FallingForce;
-					HaUsatoIlDash = true;
-				}
-				else
-				{
-					player->GetCharacterMovement()->GravityScale = 2.0f;
-					OnDash = false;
-					HaUsatoIlDash = false;
-				}
-			}
-			else//se il player si trova a terra
-			{
-				if (HaUsatoIlDash == false)
-				{
-					if (StopRunCharacter())
+					OnDash = false;// da rimuovere finita fiera
+					if (Svilupparty == false) { return; }// da rimuovere finita fiera
+					if (StopFalling())
 					{
-
-						DisableInput();//blueprint che disabilita input
-						player->GetCharacterMovement()->MaxWalkSpeed = 2000;
-						player->AddMovementInput(PlayerDirection, 100);
-						AlreadyJump = false;//per evitare che esegua sia l'azione in aria che l'azione a terra
-						if (CanDoIt == false)//Candoit è il booleano che si occupa di gestire la corsa
+						player->GetCharacterMovement()->GravityScale = FallingForce;
+						HaUsatoIlDash = true;
+					}
+					else
+					{
+						player->GetCharacterMovement()->GravityScale = 2.0f;
+						OnDash = false;
+						HaUsatoIlDash = false;
+					}
+				}
+				else//se il player si trova a terra
+				{
+					//if (HaUsatoIlDash == false)
+					//{
+						if (StopRunCharacter())
 						{
 
-							CanDoIt = true;
-							RealTimeRun = GetWorld()->GetTimeSeconds();
+							DisableInput();//blueprint che disabilita input
+							player->GetCharacterMovement()->MaxWalkSpeed = 2000;
+							player->AddMovementInput(PlayerDirection, 100);
+							AlreadyJump = false;//per evitare che esegua sia l'azione in aria che l'azione a terra
+							if (CanDoIt == false)//Candoit è il booleano che si occupa di gestire la corsa
+							{
+
+								CanDoIt = true;
+								RealTimeRun = GetWorld()->GetTimeSeconds();
+							}
+
 						}
+						else//la corsa si blocca se si tocca un ostacolo che non si può rompere
+						{
+							EnableInput();//blueprint che abilita input
+							player->AddMovementInput(FVector(0.f, 0.f, 0.f), 100);
+							player->GetCharacterMovement()->MaxWalkSpeed = 400;
+							//settaggio dei booleani per poter rieseguire dinuovo la corsa
+							OnDash = false;
+							CanDoIt = false;
+							DelayOnRun = true;
 
+						}
+						if (DelayOnRun == false)//la corsa si blocca superand il time massimo
+						{
+							EnableInput();//blueprint che abilita input
+							player->AddMovementInput(FVector(0.f, 0.f, 0.f), 100);
+							player->GetCharacterMovement()->MaxWalkSpeed = 400;
+							//settaggio dei booleani per poter rieseguire dinuovo la corsa
+							OnDash = false;
+							CanDoIt = false;
+							DelayOnRun = true;
+						}
 					}
-					else//la corsa si blocca se si tocca un ostacolo che non si può rompere
-					{
-						EnableInput();//blueprint che abilita input
-						player->AddMovementInput(FVector(0.f, 0.f, 0.f), 100);
-						player->GetCharacterMovement()->MaxWalkSpeed = 400;
-						//settaggio dei booleani per poter rieseguire dinuovo la corsa
-						OnDash = false;
-						CanDoIt = false;
-						DelayOnRun = true;
-
-					}
-					if (DelayOnRun == false)//la corsa si blocca superand il time massimo
-					{
-						EnableInput();//blueprint che abilita input
-						player->AddMovementInput(FVector(0.f, 0.f, 0.f), 100);
-						player->GetCharacterMovement()->MaxWalkSpeed = 400;
-						//settaggio dei booleani per poter rieseguire dinuovo la corsa
-						OnDash = false;
-						CanDoIt = false;
-						DelayOnRun = true;
-					}
-				}
+				//}
 			}
 
 		}
@@ -508,6 +516,7 @@ void UOrbis::CharacterOnAir()
 		//Controlla se il character esiste
 		if (player)
 		{
+			if (Svilupparty == false) { return; }// da rimuovere fintia fiera
 
 			if (DelayOnJump == false)
 			{	
@@ -535,16 +544,17 @@ void UOrbis::ChangeHeavyLight()//Funzione che cambia forma di orbis
 			//modifiche delle statistiche del player
 			player->GetCharacterMovement()->MaxWalkSpeed = 600;
 			player->GetCharacterMovement()->GravityScale = 2;
-		
+			checkCapsuleCollision = true;
 		break;
 	//Se è leggero diventa pesante
 	case LIGHT:
-			checkCapsuleCollision = true;
+		if (checkCapsuleCollision == true)
+		{
 			playerState = HEAVY;
 			//modifiche delle statistiche del player
 			player->GetCharacterMovement()->MaxWalkSpeed = 400;
 			player->GetCharacterMovement()->GravityScale = 2.5;
-		
+		}
 		break;
 
 	default:
@@ -761,6 +771,7 @@ bool UOrbis::HeavyLightPlatform()//funzione che si occupa di riconoscere le piat
 
 bool UOrbis::StopFalling()//funzione che gestisce la caduta incontrollata del player in forma heavy
 {
+	if (Svilupparty == false) { return false; }// da rimuovere finita fiera
 	bool result = false;
 	FHitResult Hit;
 
