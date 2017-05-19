@@ -110,27 +110,18 @@ void ARerumCharacter::UpdateAnimation()
 				{
 					GetSprite()->SetFlipbook(jetpackLight);
 				}
-				else if (orbis->state == EState::FlyingDash && orbis->lightFuel > 0.f)
-				{
-					GetSprite()->SetFlipbook(airDashLight);
-				}
+
 			}
 			else if (zVelocity < 0.f)
 			{
-				if (GetSprite()->GetFlipbook() == jumpLightUp)
-				{
-					UE_LOG(LogTemp,Warning,TEXT("Animation"))
-					GetSprite()->SetFlipbook(jumpLightDown);
-				}
-				else if (GetSprite()->GetFlipbook() == jetpackLight)
-				{
-					UE_LOG(LogTemp,Warning,TEXT("Jetpack"))
-				}
-				else if (orbis->state == EState::FlyingDash && orbis->lightFuel > 0.f)
+				GetSprite()->SetFlipbook(jumpLightDown);
+				if (orbis->state == EState::FlyingDash && orbis->lightFuel > 0.f)
 				{
 					GetSprite()->SetFlipbook(airDashLight);
 				}
 			}
+			
+
 		}
 		else if (PlayerSpeedSqr > 0.0f)
 		{
