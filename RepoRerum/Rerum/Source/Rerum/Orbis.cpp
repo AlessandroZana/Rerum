@@ -380,17 +380,21 @@ void UOrbis::Dash()
 {
 	//Var per attivare il dash di orbis
 	OnDash = true;
-	state = EState::FlyingDash;
+	//state = EState::FlyingDash;
+	UE_LOG(LogTemp, Warning, TEXT("Dash"));
 }
 
 void UOrbis::NotDash()
 {
 	//Var per disattivare il dash di orbis
-	//if (playerState == LIGHT)
-	//{
+	if (playerState == LIGHT)
+	{
 		OnDash = false;//attenzione questa funzione vale solo per la forma light in modo da risolvere il bug del dash
-	//}
-	state = EState::NotFlyingDash;
+		state = EState::NotFlyingDash;
+		UE_LOG(LogTemp, Warning, TEXT("Not Dash"));
+	}
+	
+	UE_LOG(LogTemp, Warning, TEXT("Not Dash EV"));
 }
 
 void UOrbis::CharacterOnDash()
@@ -405,6 +409,7 @@ void UOrbis::CharacterOnDash()
 				//se il player si trova in aria
 				if (OnAir == true || CanJumpIsUp == true)
 				{
+					state = EState::FlyingDash;
 					FVector DashMoviment = PlayerDirection * DashForceOnAir;
 					player->LaunchCharacter(DashMoviment, false, true);
 					IsOnDash = true;
@@ -471,6 +476,7 @@ void UOrbis::CharacterOnDash()
 						else//la corsa si blocca se si tocca un ostacolo che non si può rompere
 						{
 							EnableInput();//blueprint che abilita input
+							state = EState::NotFlyingDash;
 							player->AddMovementInput(FVector(0.f, 0.f, 0.f), 100);
 							player->GetCharacterMovement()->MaxWalkSpeed = 400;
 							//settaggio dei booleani per poter rieseguire dinuovo la corsa
@@ -482,6 +488,7 @@ void UOrbis::CharacterOnDash()
 						if (DelayOnRun == false)//la corsa si blocca superand il time massimo
 						{
 							EnableInput();//blueprint che abilita input
+							state = EState::NotFlyingDash;
 							player->AddMovementInput(FVector(0.f, 0.f, 0.f), 100);
 							player->GetCharacterMovement()->MaxWalkSpeed = 400;
 							//settaggio dei booleani per poter rieseguire dinuovo la corsa

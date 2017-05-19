@@ -89,6 +89,7 @@ void ARerumCharacter::CastToOrbis(UOrbis* orbisComponent)
 
 void ARerumCharacter::UpdateAnimation()
 {
+	if (CanChangeAnimation == false) { return; }
 	const FVector PlayerVelocity = GetVelocity();
 	const float PlayerSpeedSqr = PlayerVelocity.SizeSquared();
 	float zVelocity = GetVelocity().Z;
@@ -110,27 +111,18 @@ void ARerumCharacter::UpdateAnimation()
 				{
 					GetSprite()->SetFlipbook(jetpackLight);
 				}
-				else if (orbis->state == EState::FlyingDash && orbis->lightFuel > 0.f)
-				{
-					GetSprite()->SetFlipbook(airDashLight);
-				}
+
 			}
 			else if (zVelocity < 0.f)
 			{
-				if (GetSprite()->GetFlipbook() == jumpLightUp)
-				{
-					UE_LOG(LogTemp,Warning,TEXT("Animation"))
-					GetSprite()->SetFlipbook(jumpLightDown);
-				}
-				else if (GetSprite()->GetFlipbook() == jetpackLight)
-				{
-					UE_LOG(LogTemp,Warning,TEXT("Jetpack"))
-				}
-				else if (orbis->state == EState::FlyingDash && orbis->lightFuel > 0.f)
+				GetSprite()->SetFlipbook(jumpLightDown);
+				if (orbis->state == EState::FlyingDash && orbis->lightFuel > 0.f)
 				{
 					GetSprite()->SetFlipbook(airDashLight);
 				}
 			}
+			
+
 		}
 		else if (PlayerSpeedSqr > 0.0f)
 		{
@@ -207,6 +199,18 @@ void ARerumCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	UpdateCharacter();
+	if (orbis->state == EState::FlyingDash && CanChangeAnimation == true)
+	{
+		CanChangeAnimation = false;
+		LastTimeCanChange= GetWorld()->GetTimeSeconds();
+	}
+	if (CanChangeAnimation == false)
+	{
+		if ((LastTimeCanChange + TimeBeforeChange) < GetWorld()->GetTimeSeconds())
+		{
+			CanChangeAnimation = true;
+		}
+	}
 }
 
 
