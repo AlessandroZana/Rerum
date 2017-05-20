@@ -187,7 +187,7 @@ void UOrbis::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 		}
 	}
 
-	if (heavyFuel < MinHeavy)
+	/*if (heavyFuel < MinHeavy)    rimosso per svilupparty ( rigenerazione 10% fuel forma grande )
 	{
 		if (LastTimeJump + 5 < GetWorld()->GetTimeSeconds())
 		{
@@ -198,7 +198,7 @@ void UOrbis::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 				heavyFuel = MinHeavy;
 			}
 		}
-	}
+	}*/
 	if (lightFuel < MinLight)
 	{
 		if (LastTimeJump + 5 < GetWorld()->GetTimeSeconds())
@@ -380,7 +380,7 @@ void UOrbis::Dash()
 {
 	//Var per attivare il dash di orbis
 	OnDash = true;
-	state = EState::FlyingDash;
+	//state = EState::FlyingDash;
 	UE_LOG(LogTemp, Warning, TEXT("Dash"));
 }
 
@@ -409,6 +409,7 @@ void UOrbis::CharacterOnDash()
 				//se il player si trova in aria
 				if (OnAir == true || CanJumpIsUp == true)
 				{
+					state = EState::FlyingDash;
 					FVector DashMoviment = PlayerDirection * DashForceOnAir;
 					player->LaunchCharacter(DashMoviment, false, true);
 					IsOnDash = true;
@@ -417,6 +418,7 @@ void UOrbis::CharacterOnDash()
 				}
 				else//se il player si trova a terra
 				{
+					if (Svilupparty == false) { return; }// da rimuovere fine fiera
 					FVector DashMoviment = PlayerDirection * DashForceOnGround;
 					player->LaunchCharacter(DashMoviment, false, true);
 					OnDash = false;
@@ -457,9 +459,11 @@ void UOrbis::CharacterOnDash()
 						if (StopRunCharacter())
 						{
 
+							
 							DisableInput();//blueprint che disabilita input
 							player->GetCharacterMovement()->MaxWalkSpeed = 2000;
 							player->AddMovementInput(PlayerDirection, 100);
+							
 							AlreadyJump = false;//per evitare che esegua sia l'azione in aria che l'azione a terra
 							if (CanDoIt == false)//Candoit è il booleano che si occupa di gestire la corsa
 							{
@@ -479,7 +483,7 @@ void UOrbis::CharacterOnDash()
 							OnDash = false;
 							CanDoIt = false;
 							DelayOnRun = true;
-
+							heavyFuel = RemoveFuel(heavyFuel);
 						}
 						if (DelayOnRun == false)//la corsa si blocca superand il time massimo
 						{
@@ -491,6 +495,7 @@ void UOrbis::CharacterOnDash()
 							OnDash = false;
 							CanDoIt = false;
 							DelayOnRun = true;
+							heavyFuel = RemoveFuel(heavyFuel);
 						}
 					}
 				//}

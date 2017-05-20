@@ -89,6 +89,7 @@ void ARerumCharacter::CastToOrbis(UOrbis* orbisComponent)
 
 void ARerumCharacter::UpdateAnimation()
 {
+	if (CanChangeAnimation == false) { return; }
 	const FVector PlayerVelocity = GetVelocity();
 	const float PlayerSpeedSqr = PlayerVelocity.SizeSquared();
 	float zVelocity = GetVelocity().Z;
@@ -198,6 +199,18 @@ void ARerumCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	UpdateCharacter();
+	if (orbis->state == EState::FlyingDash && CanChangeAnimation == true)
+	{
+		CanChangeAnimation = false;
+		LastTimeCanChange= GetWorld()->GetTimeSeconds();
+	}
+	if (CanChangeAnimation == false)
+	{
+		if ((LastTimeCanChange + TimeBeforeChange) < GetWorld()->GetTimeSeconds())
+		{
+			CanChangeAnimation = true;
+		}
+	}
 }
 
 

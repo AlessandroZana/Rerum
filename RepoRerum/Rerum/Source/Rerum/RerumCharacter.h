@@ -100,6 +100,12 @@ public:
 	FORCEINLINE class UCameraComponent* GetSideViewCameraComponent() const { return SideViewCameraComponent; }
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
+
+private :
+
+	bool CanChangeAnimation = true;
+	float TimeBeforeChange = 0.5;
+	float LastTimeCanChange;
 };
 
 						
