@@ -17,7 +17,9 @@ enum class EState : uint8
 	FlyingDash,
 	NotFlyingDash,
 	SmashHeavy,
-	DashHeavy
+	DashHeavy,
+	TransformToHeavy,
+	TransformToLight
 };
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -191,5 +193,6 @@ public:
 	bool StopFalling();//funzione che distrugge oggetti e blocca il char durante caduta
 
 	bool Svilupparty = false;
+	bool transform = false;
 
 };

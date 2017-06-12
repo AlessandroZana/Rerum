@@ -135,6 +135,7 @@ void ARerumCharacter::UpdateAnimation()
 	}
 	else if(orbis->playerState == 1)
 	{
+	
 		if (orbis->checkCapsuleCollision)
 		{
 			getCapsulePosition = GetCapsuleComponent()->GetComponentLocation();
@@ -179,11 +180,39 @@ void ARerumCharacter::UpdateAnimation()
 		else if (PlayerSpeedSqr > 0.0f)
 		{
 			GetSprite()->SetFlipbook(walkHeavy);
+			if (orbis->transform == true)
+			{
+
+				//UE_LOG(LogTemp, Warning, TEXT("Transform"));
+				orbis->DisableInput();
+				GetSprite()->SetFlipbook(transformToHeavy);
+				if ((FPlatformTime::Seconds() - beginTransform) > transformDelay)
+				{
+					//UE_LOG(LogTemp, Warning, TEXT("Not transform"));
+					orbis->EnableInput();
+					orbis->transform = false;
+					beginTransform = FPlatformTime::Seconds();
+				}
+			}
 		}
 
 		else
 		{
 			GetSprite()->SetFlipbook(idleHeavy);
+			if (orbis->transform == true)
+			{
+				
+				//UE_LOG(LogTemp, Warning, TEXT("Transform"));
+				orbis->DisableInput();
+				GetSprite()->SetFlipbook(transformToHeavy);
+				if ((FPlatformTime::Seconds() - beginTransform) > transformDelay)
+				{
+					//UE_LOG(LogTemp, Warning, TEXT("Not transform"));
+					orbis->EnableInput();
+					orbis->transform = false;
+					beginTransform = FPlatformTime::Seconds();
+				}
+			}
 		}
 
 	}
@@ -193,6 +222,7 @@ void ARerumCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	capsuleUp = 100.0;
+	beginTransform = FPlatformTime::Seconds();
 }
 //Tick
 void ARerumCharacter::Tick(float DeltaSeconds)

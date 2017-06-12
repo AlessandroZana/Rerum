@@ -37,6 +37,12 @@ class ARerumCharacter : public APaperCharacter
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Transform Animation")
+	float transformDelay = 2.0;
+
+	float beginTransform;
+
 protected:
 
 	//Animazioni orbis leggero
@@ -54,6 +60,8 @@ protected:
 	class UPaperFlipbook* jetpackLightDown;
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	class UPaperFlipbook* airDashLight;
+	UPROPERTY(EditDefaultsOnly, Category = "Animations")
+	class UPaperFlipbook* transformToHeavy;
 
 	//Animazioni orbis pesante
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
@@ -70,7 +78,9 @@ protected:
 	class UPaperFlipbook* dashHeavy;
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	class UPaperFlipbook* smashHeavy;
-
+	UPROPERTY(EditDefaultsOnly, Category = "Animations")
+	class UPaperFlipBook* transformToLight;
+	
 	/** Called to choose the correct animation to play based on the character's movement state */
 	void UpdateAnimation();
 
