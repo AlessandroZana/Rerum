@@ -98,7 +98,7 @@ void ARerumCharacter::UpdateAnimation()
 	{
 		GetCapsuleComponent()->SetCapsuleHalfHeight(96.0f);
 		GetCapsuleComponent()->SetCapsuleRadius(40.0f);
-
+		
 		if (GetCharacterMovement()->IsFalling())
 		{
 			if (zVelocity > 0.f)
@@ -146,7 +146,22 @@ void ARerumCharacter::UpdateAnimation()
 		GetCapsuleComponent()->SetCapsuleHalfHeight(200.0f);
 		GetCapsuleComponent()->SetCapsuleRadius(40.0f);
 		
-		if (orbis->OnDash == true && orbis->AlreadyJump == false && orbis->heavyFuel > 0.f)
+		if (orbis->transform == true)
+		{
+
+			//UE_LOG(LogTemp, Warning, TEXT("Transform"));
+			orbis->DisableInput();
+			GetSprite()->SetFlipbook(transformToHeavy);
+			if ((FPlatformTime::Seconds() - beginTransform) > transformDelay)
+			{
+				//UE_LOG(LogTemp, Warning, TEXT("Not transform"));
+				orbis->EnableInput();
+				orbis->transform = false;
+				beginTransform = FPlatformTime::Seconds();
+			}
+		}
+		
+		else if (orbis->OnDash == true && orbis->AlreadyJump == false && orbis->heavyFuel > 0.f)
 		{
 			GetSprite()->SetFlipbook(dashHeavy);
 		}
@@ -180,39 +195,11 @@ void ARerumCharacter::UpdateAnimation()
 		else if (PlayerSpeedSqr > 0.0f)
 		{
 			GetSprite()->SetFlipbook(walkHeavy);
-			if (orbis->transform == true)
-			{
-
-				//UE_LOG(LogTemp, Warning, TEXT("Transform"));
-				orbis->DisableInput();
-				GetSprite()->SetFlipbook(transformToHeavy);
-				if ((FPlatformTime::Seconds() - beginTransform) > transformDelay)
-				{
-					//UE_LOG(LogTemp, Warning, TEXT("Not transform"));
-					orbis->EnableInput();
-					orbis->transform = false;
-					beginTransform = FPlatformTime::Seconds();
-				}
-			}
 		}
 
 		else
 		{
 			GetSprite()->SetFlipbook(idleHeavy);
-			if (orbis->transform == true)
-			{
-				
-				//UE_LOG(LogTemp, Warning, TEXT("Transform"));
-				orbis->DisableInput();
-				GetSprite()->SetFlipbook(transformToHeavy);
-				if ((FPlatformTime::Seconds() - beginTransform) > transformDelay)
-				{
-					//UE_LOG(LogTemp, Warning, TEXT("Not transform"));
-					orbis->EnableInput();
-					orbis->transform = false;
-					beginTransform = FPlatformTime::Seconds();
-				}
-			}
 		}
 
 	}

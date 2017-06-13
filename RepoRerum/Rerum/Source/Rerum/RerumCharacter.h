@@ -41,7 +41,7 @@ class ARerumCharacter : public APaperCharacter
 	UPROPERTY(EditDefaultsOnly, Category = "Transform Animation")
 	float transformDelay = 2.0;
 
-	float beginTransform;
+	double beginTransform;
 
 protected:
 
@@ -61,7 +61,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	class UPaperFlipbook* airDashLight;
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
-	class UPaperFlipbook* transformToHeavy;
+		class UPaperFlipbook* transformToHeavy;
+
 
 	//Animazioni orbis pesante
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
