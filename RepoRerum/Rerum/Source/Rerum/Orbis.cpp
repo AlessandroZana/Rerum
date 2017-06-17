@@ -552,7 +552,7 @@ void UOrbis::ChangeHeavyLight()//Funzione che cambia forma di orbis
 	//Se è pesante diventa leggero
 	case HEAVY:
 			playerState = LIGHT;
-
+			transform = true;
 			//modifiche delle statistiche del player
 			player->GetCharacterMovement()->MaxWalkSpeed = 600;
 			player->GetCharacterMovement()->GravityScale = 2;

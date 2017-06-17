@@ -80,7 +80,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	class UPaperFlipbook* smashHeavy;
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
-	class UPaperFlipBook* transformToLight;
+	class UPaperFlipbook* transformToLight;
 	
 	/** Called to choose the correct animation to play based on the character's movement state */
 	void UpdateAnimation();
