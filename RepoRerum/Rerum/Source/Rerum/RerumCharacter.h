@@ -31,9 +31,13 @@ class ARerumCharacter : public APaperCharacter
 
 	UTextRenderComponent* TextComponent;
 	
-	FVector getCapsulePosition;
-	FVector setcapsulePosition;
-	float capsuleUp;
+	FVector getCapsulePositionFirst;
+	FVector getCapsulePositionSecond;
+	FVector setCapsulePositionFirst;
+	FVector setCapsulePositionSecond;
+	float capsuleUpFirst;
+	float capsuleUpSecond;
+
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;

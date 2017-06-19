@@ -170,8 +170,8 @@ void UDoorComponent::DelayDestroy()
 	{
 		if (time + delay2 < GetWorld()->GetTimeSeconds())//nel caso di special door si distruggono 2 ante con un delay diverso
 		{
-			LeftDoor->Destroy();//distruzzione 1 anta
-			RightDoor->Destroy();//distruzzione 1 anta
+			LeftDoor->Destroy();//distruzione 1 anta
+			RightDoor->Destroy();//distruzione 1 anta
 			//LeftDoor = nullptr;
 			//RightDoor = nullptr;
 		}
@@ -181,14 +181,14 @@ void UDoorComponent::DelayDestroy()
 	{
 		if (time + destroyDoor < GetWorld()->GetTimeSeconds())//nel caso di porta normale si distrugge una sola anta con un delay diverso
 		{
-			GetOwner()->Destroy();//distruzzione 1 anta
+			GetOwner()->Destroy();//distruzione 1 anta
 		}
 			
 	}
 }
 void UDoorComponent::OpenWithLeva()
 {
-	time = GetWorld()->GetTimeSeconds();//salvattaggio del tempo nella variabile time in modo da permettere la distruzione dopo un delay prestabilito
+	time = GetWorld()->GetTimeSeconds();//salvataggio del tempo nella variabile time in modo da permettere la distruzione dopo un delay prestabilito
 
 	Open.Broadcast();
 	

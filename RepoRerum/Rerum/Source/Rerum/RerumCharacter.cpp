@@ -153,9 +153,11 @@ void ARerumCharacter::UpdateAnimation()
 	
 		if (orbis->checkCapsuleCollision)
 		{
-			getCapsulePosition = GetCapsuleComponent()->GetComponentLocation();
-			setcapsulePosition = FVector(getCapsulePosition.X, getCapsulePosition.Y, getCapsulePosition.Z + capsuleUp);
-			GetCapsuleComponent()->SetRelativeLocation(setcapsulePosition);
+			getCapsulePositionFirst = GetCapsuleComponent()->GetComponentLocation();
+			setCapsulePositionFirst = FVector(getCapsulePositionFirst.X, getCapsulePositionFirst.Y, getCapsulePositionFirst.Z + capsuleUpFirst);
+			GetCapsuleComponent()->SetRelativeLocation(setCapsulePositionFirst);
+			//GetCapsuleComponent()->SetCapsuleHalfHeight(100.0);
+			//GetCapsuleComponent()->SetCapsuleRadius(40.0f);
 			orbis->checkCapsuleCollision = false;
 		}
 
@@ -169,8 +171,8 @@ void ARerumCharacter::UpdateAnimation()
 			GetSprite()->SetFlipbook(transformToHeavy);
 			if ((FPlatformTime::Seconds() - beginTransform) > transformDelay)
 			{
-				GetCapsuleComponent()->SetCapsuleHalfHeight(200.0);
-				GetCapsuleComponent()->SetCapsuleRadius(40.0f);
+				//GetCapsuleComponent()->SetCapsuleHalfHeight(200.0);
+				//GetCapsuleComponent()->SetCapsuleRadius(40.0f);
 				//UE_LOG(LogTemp, Warning, TEXT("Not transform"));
 				orbis->EnableInput();
 				beginTransform = FPlatformTime::Seconds();
@@ -226,7 +228,8 @@ void ARerumCharacter::UpdateAnimation()
 void ARerumCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	capsuleUp = 100.0;
+	capsuleUpFirst = 100.0;
+	capsuleUpSecond = 100.0;
 	beginTransform = FPlatformTime::Seconds();
 }
 //Tick
