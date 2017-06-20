@@ -72,6 +72,7 @@ void UPlatformMoviment::SetTrue()
 	
 	if (Door)//controllo se si è stato associato ad una porta / se la porta non è ancora stata distrutta
 	{
+		light.Broadcast();
 		AActor* Botton = Cast<AActor>(GetOwner());//si casta l'actore che si è premuto
 		Door->FindComponentByClass<UDoorComponent>()->DoorMoviment(Botton);//chiamata della funzione doormoviment con passaggio del actor premuto per il controllo se sia stato premuto il tasto giusto
 	}

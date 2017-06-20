@@ -31,9 +31,13 @@ class ARerumCharacter : public APaperCharacter
 
 	UTextRenderComponent* TextComponent;
 	
-	FVector getCapsulePosition;
-	FVector setcapsulePosition;
-	float capsuleUp;
+	FVector getCapsulePositionFirst;
+	FVector getCapsulePositionSecond;
+	FVector setCapsulePositionFirst;
+	FVector setCapsulePositionSecond;
+	float capsuleUpFirst;
+	float capsuleUpSecond;
+
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
@@ -80,7 +84,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	class UPaperFlipbook* smashHeavy;
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
-	class UPaperFlipBook* transformToLight;
+	class UPaperFlipbook* transformToLight;
 	
 	/** Called to choose the correct animation to play based on the character's movement state */
 	void UpdateAnimation();
