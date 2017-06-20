@@ -6,6 +6,7 @@
 #include "PlatformMoviment.h"
 #include "DoorComponent.generated.h"
 
+class camera;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOpenDoor);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -24,6 +25,7 @@ public:
 	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 
 	void DoorMoviment(AActor * value);
+
 
 	UPROPERTY(EditAnywhere)
 	AActor* Telaio;//attore contenente il telaio della porta (attualmente non più usato)
@@ -73,4 +75,5 @@ private:
 	AActor* Number1 = nullptr;
 	AActor* Number2 = nullptr;
 	AActor* Number3 = nullptr;
+
 };

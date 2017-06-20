@@ -333,7 +333,7 @@ void UOrbis::DestroyUp()//serve ad evitare che con il salto semplice si attivi i
 
 void UOrbis::Fly()
 {
-	if (CanJumpIsUp)
+	if (true)
 	{
 		if (heavyFuel > 0 && playerState == HEAVY)
 		{

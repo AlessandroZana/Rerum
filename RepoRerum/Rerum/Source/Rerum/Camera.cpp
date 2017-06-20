@@ -107,6 +107,7 @@ void UCamera::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompone
 
 void UCamera::MoveCamera()
 {
+	
 	if (NuovaPosizione)
 	{
 		IsMoving = true;
