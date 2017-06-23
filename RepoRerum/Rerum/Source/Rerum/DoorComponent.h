@@ -77,9 +77,4 @@ private:
 	AActor* Number1 = nullptr;
 	AActor* Number2 = nullptr;
 	AActor* Number3 = nullptr;
-
-<<<<<<< HEAD
-	UPlatformMoviment* buttonLight = nullptr;
-=======
->>>>>>> ab457d418c39ec29e11d27435fff7738a5face0c
 };

@@ -22,8 +22,6 @@ UDoorComponent::UDoorComponent()
 void UDoorComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	auto owner = GetOwner();
-	buttonLight = Cast<UPlatformMoviment>(owner);
 
 	//controllo se è stato inserito almeno un pulsante e settaggio del contatore
 	if (Botton1)
