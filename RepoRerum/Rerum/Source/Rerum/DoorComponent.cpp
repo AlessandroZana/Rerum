@@ -1,9 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Rerum.h"
-#include "DoorComponent.h"
-#include "PaperSprite.h"
 #include "Camera.h"
+#include "DoorComponent.h"
+#include "PlatformMoviment.h"
+#include "PaperSprite.h"
 
 
 // Sets default values for this component's properties
@@ -12,10 +13,8 @@ UDoorComponent::UDoorComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-	
-	// ...
 
-	
+	// ...
 }
 
 
@@ -23,7 +22,7 @@ UDoorComponent::UDoorComponent()
 void UDoorComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	//controllo se è stato inserito almeno un pulsante e settaggio del contatore
 	if (Botton1)
 	{
@@ -83,7 +82,7 @@ void UDoorComponent::TickComponent( float DeltaTime, ELevelTick TickType, FActor
 			{
 				if (Pressed == Count)//se il numero di tasti premuto (pressed) è uguale al numero di tasti da premere (count) allora si apre la porta
 				{
-					
+
 					Open.Broadcast();
 					//Telaio->SetActorEnableCollision(ECollisionEnabled::NoCollision);
 				
@@ -99,7 +98,6 @@ void UDoorComponent::TickComponent( float DeltaTime, ELevelTick TickType, FActor
 					{
 						Number3->FindComponentByClass<UPlatformMoviment>()->Door = nullptr;
 					}
-					
 					CanBeDestroy = true;//booleano che permette la distruzione delle ante quando finiscono il loro moviemnto di apertura
 				}
 
@@ -137,33 +135,32 @@ void UDoorComponent::TickComponent( float DeltaTime, ELevelTick TickType, FActor
 
 void UDoorComponent::DoorMoviment(AActor * value)//controllo tasti premuti
 {
-		
 	if (Pressed == 0)//contatore che stabilisce il tasto da premere
 	{
+
 		if (value == Botton1)//se il tasto premuto è uguale al tasto da premere si aumenta il contatore dei tasti premuti
 		{
+
 			time2 = GetWorld()->GetTimeSeconds();
-			Number1 = value;
-			//value->FindComponentByClass<UPlatformMoviment>()->Door = nullptr;
-			Pressed++;
+			ActivatePlatform(value);
+			//Number1 = value;   TODO: chiedere ad Alessandro cos'è!!!
+			
 		}
 	}
 	if (Pressed == 1)//contatore che stabilisce il tasto da premere
 	{
 		if (value == Botton2)//se il tasto premuto è uguale al tasto da premere si aumenta il contatore dei tasti premuti
 		{
-			Number2 = value;
-			//value->FindComponentByClass<UPlatformMoviment>()->Door = nullptr;
-			Pressed++;
+			//Number2 = value;
+			ActivatePlatform(value);
 		}
 	}
 	if (Pressed == 2)//contatore che stabilisce il tasto da premere
 	{
 		if (value == Botton3)//se il tasto premuto è uguale al tasto da premere si aumenta il contatore dei tasti premuti
 		{
-			Number3 = value;
-			//value->FindComponentByClass<UPlatformMoviment>()->Door = nullptr;
-			Pressed++;
+			//Number3 = value;
+			ActivatePlatform(value);
 		}
 	}
 
@@ -220,4 +217,20 @@ void UDoorComponent::OpenWithLeva()
 	
 		DelayDestroy();//chaiamta della funzione che distrugge le porte
 	
+}
+
+void UDoorComponent::ActivatePlatform(AActor* value)
+{
+	auto platformMovement = value->FindComponentByClass<UPlatformMoviment>();
+	if (platformMovement)
+	{
+		platformMovement->LightOn();
+		//UE_LOG(LogTemp, Warning, TEXT("Light"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Not Light"));
+	}
+	//value->FindComponentByClass<UPlatformMoviment>()->Door = nullptr;
+	Pressed++;
 }

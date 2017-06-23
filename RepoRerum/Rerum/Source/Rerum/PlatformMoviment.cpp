@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Rerum.h"
+#include "PlatformLight.h"
 #include "PlatformMoviment.h"
 
 
@@ -19,9 +20,7 @@ UPlatformMoviment::UPlatformMoviment()
 void UPlatformMoviment::BeginPlay()
 {
 	Super::BeginPlay();
-
 	// ...
-	
 }
 
 
@@ -72,14 +71,30 @@ void UPlatformMoviment::SetTrue()
 	
 	if (Door)//controllo se si è stato associato ad una porta / se la porta non è ancora stata distrutta
 	{
-		light.Broadcast();
-		AActor* Botton = Cast<AActor>(GetOwner());//si casta l'actore che si è premuto
+		AActor* Botton = Cast<AActor>(GetOwner());//si casta l'attore che si è premuto
 		Door->FindComponentByClass<UDoorComponent>()->DoorMoviment(Botton);//chiamata della funzione doormoviment con passaggio del actor premuto per il controllo se sia stato premuto il tasto giusto
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Porta già aperta"));
+		//UE_LOG(LogTemp, Warning, TEXT("Porta già aperta"));
 	}
+}
+
+void UPlatformMoviment::PlatformLightInit(UPlatformLight* platformInit)
+{
+	platformLight = platformInit;
+}
+
+void UPlatformMoviment::LightOn()
+{
+	if (!ensure(platformLight)) { return; }
+	platformLight->SetVisibility(true);
+}
+
+void UPlatformMoviment::LightOff()
+{
+	if (!ensure(platformLight)) { return; }
+	platformLight->SetVisibility(false);
 }
 
 /*void UPlatformMoviment::OpenDoor()

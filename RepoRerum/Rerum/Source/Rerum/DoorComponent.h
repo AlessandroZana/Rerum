@@ -2,12 +2,11 @@
 
 #pragma once
 
-#include "PlatformMoviment.h"
 #include "Components/ActorComponent.h"
-#include "PlatformMoviment.h"
 #include "DoorComponent.generated.h"
 
-class UCamera;
+class camera;
+class UPlatformMoviment;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOpenDoor);
 
@@ -27,7 +26,7 @@ public:
 	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 
 	void DoorMoviment(AActor * value);
-	
+
 	UPROPERTY(EditInstanceOnly)
 	ACameraActor* camera;
 
@@ -75,11 +74,11 @@ private:
 	bool CanBeDestroy = false;//Variabile che stabilisce l'apertura della porta e di conseguenza la distruzione delle ante
 
 	void DelayDestroy();//Funzione che distrugge le ante
+	void ActivatePlatform(AActor* value);
 
 	AActor* Number1 = nullptr;
 	AActor* Number2 = nullptr;
 	AActor* Number3 = nullptr;
 
 	bool alreadydestroy = false;
-
 };

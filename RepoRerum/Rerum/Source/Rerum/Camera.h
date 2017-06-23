@@ -29,8 +29,8 @@ public:
 	void CameraZoomIn();//funzione che gestisce lo zoom della camera
 	void CameraZoomOut();//funzione che gestisce lo zoom della camera
 
-	
-		AActor * NuovaPosizione= nullptr;//riferimento del punto di zoom una volta sul trigger
+	UPROPERTY(EditAnywhere)
+		AActor * NuovaPosizione;//riferimento del punto di zoom una volta sul trigger
 
 	UPROPERTY(EditAnywhere)
 		float MaxCameraDistance;//distanza massima della camera quando si effettua lo spostamento per trigger
