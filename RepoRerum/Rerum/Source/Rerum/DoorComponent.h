@@ -1,12 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-#include "PlatformMoviment.h"
+
 #include "Components/ActorComponent.h"
-#include "PlatformMoviment.h"
 #include "DoorComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOpenDoor);
+
+class UPlatformMoviment;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class RERUM_API UDoorComponent : public UActorComponent
@@ -69,8 +70,11 @@ private:
 	bool CanBeDestroy = false;//Variabile che stabilisce l'apertura della porta e di conseguenza la distruzione delle ante
 
 	void DelayDestroy();//Funzione che distrugge le ante
+	void ActivatePlatform(AActor* value);
 
 	AActor* Number1 = nullptr;
 	AActor* Number2 = nullptr;
 	AActor* Number3 = nullptr;
+
+	UPlatformMoviment* buttonLight = nullptr;
 };

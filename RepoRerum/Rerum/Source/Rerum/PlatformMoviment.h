@@ -6,7 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "PlatformMoviment.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FLight);
+class UPlatformLight;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class RERUM_API UPlatformMoviment : public UActorComponent
@@ -21,16 +21,21 @@ public:
 	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 	void SetTrue();//funzione chiamata dal player che serve a passare alla porta il tasto premuto
 	
-	UPROPERTY(BluePrintAssignable)
-	FLight light;
+	UFUNCTION(BlueprintCallable, Category = "Light")
+	void PlatformLightInit(UPlatformLight* platformInit);
 	
 	UPROPERTY(EditAnywhere)
 	AActor* Door;//porta alla quale la piattaforma è associata
 
+	void LightOn();
+	void LightOff();
+
+	
 	//void OpenDoor();
 	//float time;
 	//float delay;
 private:
 	bool CanMove = false;//booleano per lo spostamento delle piattaforme(al momento non più utilizzato)
 	bool Moviment = false;//secondo booleano per lo spostamento delle piattaforme (al momento non più utlizzato)
+	UPlatformLight* platformLight = nullptr;
 };
