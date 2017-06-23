@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Rerum.h"
-#include "Camera.h"
 #include "DoorComponent.h"
 #include "PaperSprite.h"
+#include "Camera.h"
 
 
 // Sets default values for this component's properties
@@ -12,8 +12,10 @@ UDoorComponent::UDoorComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
+	
 	// ...
+
+	
 }
 
 
@@ -21,6 +23,7 @@ UDoorComponent::UDoorComponent()
 void UDoorComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	
 	//controllo se è stato inserito almeno un pulsante e settaggio del contatore
 	if (Botton1)
 	{
@@ -80,7 +83,7 @@ void UDoorComponent::TickComponent( float DeltaTime, ELevelTick TickType, FActor
 			{
 				if (Pressed == Count)//se il numero di tasti premuto (pressed) è uguale al numero di tasti da premere (count) allora si apre la porta
 				{
-
+					
 					Open.Broadcast();
 					//Telaio->SetActorEnableCollision(ECollisionEnabled::NoCollision);
 				
@@ -96,6 +99,7 @@ void UDoorComponent::TickComponent( float DeltaTime, ELevelTick TickType, FActor
 					{
 						Number3->FindComponentByClass<UPlatformMoviment>()->Door = nullptr;
 					}
+					
 					CanBeDestroy = true;//booleano che permette la distruzione delle ante quando finiscono il loro moviemnto di apertura
 				}
 
@@ -133,6 +137,7 @@ void UDoorComponent::TickComponent( float DeltaTime, ELevelTick TickType, FActor
 
 void UDoorComponent::DoorMoviment(AActor * value)//controllo tasti premuti
 {
+		
 	if (Pressed == 0)//contatore che stabilisce il tasto da premere
 	{
 		if (value == Botton1)//se il tasto premuto è uguale al tasto da premere si aumenta il contatore dei tasti premuti
@@ -166,7 +171,20 @@ void UDoorComponent::DoorMoviment(AActor * value)//controllo tasti premuti
 
 void UDoorComponent::DelayDestroy()
 {
-	
+	if (!alreadydestroy)
+	{
+		if (camera)
+		{
+			auto tmp = camera->FindComponentByClass<UCamera>();
+
+			if (tmp)
+			{
+				tmp->NuovaPosizione = GetOwner();
+				tmp->MoveCamera();
+			}
+		}
+	}
+	alreadydestroy = true;
 	if (IsSpecialDoor)//prima di distruggere si verifica di quale tipologia di porta stiamo parlando tramite questo if
 	{
 		if (time + delay2 < GetWorld()->GetTimeSeconds())//nel caso di special door si distruggono 2 ante con un delay diverso

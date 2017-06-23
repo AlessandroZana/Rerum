@@ -99,7 +99,7 @@ void UOrbis::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 			CharacterOnDash();
 		}
 		break;
-
+		
 	default:
 		UE_LOG(LogTemp, Warning, TEXT("State not found"));
 		break;
