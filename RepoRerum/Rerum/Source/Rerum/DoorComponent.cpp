@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Rerum.h"
+#include "Camera.h"
 #include "DoorComponent.h"
 #include "PlatformMoviment.h"
 #include "PaperSprite.h"

@@ -30,11 +30,10 @@ public:
 	void CameraZoomOut();//funzione che gestisce lo zoom della camera
 
 	UPROPERTY(EditAnywhere)
-	AActor * NuovaPosizione;//riferimento del punto di zoom una volta sul trigger
+		AActor * NuovaPosizione;//riferimento del punto di zoom una volta sul trigger
 
 	UPROPERTY(EditAnywhere)
-
-	float MaxCameraDistance;//distanza massima della camera quando si effettua lo spostamento per trigger
+		float MaxCameraDistance;//distanza massima della camera quando si effettua lo spostamento per trigger
 
 	UPROPERTY(EditAnywhere)
 		float MaxCameraZoomOut=500;//distanza massima dello zoom quando si usa il jetpack
