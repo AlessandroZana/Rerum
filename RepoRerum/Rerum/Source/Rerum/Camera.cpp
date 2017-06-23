@@ -107,22 +107,24 @@ void UCamera::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompone
 
 void UCamera::MoveCamera()
 {
-	
-	if (NuovaPosizione)
+	if (IsMoving == false)
 	{
-		IsMoving = true;
-		FVector Position = FVector(NuovaPosizione->GetActorLocation().X, GetOwner()->GetActorLocation().Y+MaxCameraDistance, NuovaPosizione->GetActorLocation().Z + 60);
-		if (Position.Z < 500)//controllo che la z della camera non vada sotto un tot in modo da non vedere troppo sotto il terrono
+		if (NuovaPosizione)
 		{
-			Position.Z = 500;
+			IsMoving = true;
+			FVector Position = FVector(NuovaPosizione->GetActorLocation().X, GetOwner()->GetActorLocation().Y + MaxCameraDistance, NuovaPosizione->GetActorLocation().Z + 60);
+			if (Position.Z < 500)//controllo che la z della camera non vada sotto un tot in modo da non vedere troppo sotto il terrono
+			{
+				Position.Z = 500;
+			}
+			GetOwner()->SetActorLocation(Position, false, nullptr);
+			Time = GetWorld()->GetTimeSeconds();
+
 		}
-		GetOwner()->SetActorLocation(Position, false, nullptr);
-		Time = GetWorld()->GetTimeSeconds();
-		
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("ATTENZIONE NUOVA POSIZIONE DELLA CAMERA ASSENTE"));
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("ATTENZIONE NUOVA POSIZIONE DELLA CAMERA ASSENTE"));
+		}
 	}
 }
 

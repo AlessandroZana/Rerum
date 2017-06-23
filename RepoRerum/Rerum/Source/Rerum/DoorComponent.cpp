@@ -168,7 +168,20 @@ void UDoorComponent::DoorMoviment(AActor * value)//controllo tasti premuti
 
 void UDoorComponent::DelayDestroy()
 {
-	
+	if (!alreadydestroy)
+	{
+		if (camera)
+		{
+			auto tmp = camera->FindComponentByClass<UCamera>();
+
+			if (tmp)
+			{
+				tmp->NuovaPosizione = GetOwner();
+				tmp->MoveCamera();
+			}
+		}
+	}
+	alreadydestroy = true;
 	if (IsSpecialDoor)//prima di distruggere si verifica di quale tipologia di porta stiamo parlando tramite questo if
 	{
 		if (time + delay2 < GetWorld()->GetTimeSeconds())//nel caso di special door si distruggono 2 ante con un delay diverso
