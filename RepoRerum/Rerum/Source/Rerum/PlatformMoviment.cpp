@@ -63,16 +63,20 @@ void UPlatformMoviment::TickComponent( float DeltaTime, ELevelTick TickType, FAc
 	// ...*/
 }
 
-void UPlatformMoviment::SetTrue()
+void UPlatformMoviment::HandlePressure()
 {
 	/*delay = 0.15f;
 	time = GetWorld()->GetTimeSeconds();
 	Moviment = true;*/
 	
-	if (Door)//controllo se si è stato associato ad una porta / se la porta non è ancora stata distrutta
+	if (Door)//controllo se è stato associato ad una porta / se la porta non è ancora stata distrutta
 	{
-		AActor* Botton = Cast<AActor>(GetOwner());//si casta l'attore che si è premuto
-		Door->FindComponentByClass<UDoorComponent>()->DoorMoviment(Botton);//chiamata della funzione doormoviment con passaggio del actor premuto per il controllo se sia stato premuto il tasto giusto
+		AActor* Button = Cast<AActor>(GetOwner());//si casta l'attore che si è premuto
+		auto doorComponent = Door->FindComponentByClass<UDoorComponent>();
+		if (ensure(doorComponent))
+		{
+			doorComponent->HandlePlatformPressure(Button);
+		}
 	}
 	else
 	{
@@ -99,7 +103,7 @@ void UPlatformMoviment::LightOff()
 
 /*void UPlatformMoviment::OpenDoor()
 {
-	//Door->FindComponentByClass<UDoorComponent>()->DoorMoviment();
+	//Door->FindComponentByClass<UDoorComponent>()->HandlePlatformPressure();
 	//FVector position = FVector(0, 0, -5);
 	//Door->AddActorLocalOffset(position);
 }*/

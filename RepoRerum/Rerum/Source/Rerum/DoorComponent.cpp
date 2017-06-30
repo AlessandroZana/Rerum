@@ -24,19 +24,18 @@ void UDoorComponent::BeginPlay()
 	Super::BeginPlay();
 
 	//controllo se è stato inserito almeno un pulsante e settaggio del contatore
-	if (Botton1)
+	/*if (firstButton)
 	{
 		Count++;
 	}
-	if (Botton2)
+	if (secondButton)
 	{
 		Count++;
 	}
-	if (Botton3)
+	if (thirdButton)
 	{
 		Count++;
-	}
-	
+	}*/
 }
 
 
@@ -44,12 +43,11 @@ void UDoorComponent::BeginPlay()
 void UDoorComponent::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
-	if (Count != 0)//nel caso che questo contatore sia nulla non si procederà con i passi successivi
+	if (platformSequence.Num() != 0)//nel caso che questo contatore sia nulla non si procederà con i passi successivi
 	{
 			if (IsSpecialDoor)//controllo se stiamo parlando di una door normale o di una special ( apertura 2 ante)
 			{
-				if (Pressed == Count)//se il numero di tasti premuto (pressed) è uguale al numero di tasti da premere (count) allora si apre la porta
-
+				if (nextButtonIndex == platformSequence.Num())//se il numero di tasti premuto (pressed) è uguale al numero di tasti da premere (count) allora si apre la porta
 				{
 					if (LeftDoor)//se left door non è nulla la si muove 
 					{
@@ -62,41 +60,41 @@ void UDoorComponent::TickComponent( float DeltaTime, ELevelTick TickType, FActor
 						RightDoor->AddActorLocalOffset(newposition2);
 					}
 					//Telaio->SetActorEnableCollision(ECollisionEnabled::NoCollision);
-					if (Number1 != nullptr)
+					if (firstButtonPressed != nullptr)
 					{
-						Number1->FindComponentByClass<UPlatformMoviment>()->Door = nullptr;
+						firstButtonPressed->FindComponentByClass<UPlatformMoviment>()->Door = nullptr;
 					}
-					if (Number2 != nullptr)
+					if (secondButtonPressed != nullptr)
 					{
-						Number2->FindComponentByClass<UPlatformMoviment>()->Door = nullptr;
+						secondButtonPressed->FindComponentByClass<UPlatformMoviment>()->Door = nullptr;
 					}
-					if (Number3 != nullptr)
+					if (thirdButtonPressed != nullptr)
 					{
-						Number3->FindComponentByClass<UPlatformMoviment>()->Door = nullptr;
+						thirdButtonPressed->FindComponentByClass<UPlatformMoviment>()->Door = nullptr;
 					}
-					CanBeDestroy = true;//booleano che permette la distruzione delle ante quando finiscono il loro moviemnto di apertura
+					CanBeDestroy = true;//booleano che permette la distruzione delle ante quando finiscono il loro movimento di apertura
 					
 				}
 			}
 			else
 			{
-				if (Pressed == Count)//se il numero di tasti premuto (pressed) è uguale al numero di tasti da premere (count) allora si apre la porta
+				if (nextButtonIndex == platformSequence.Num())//se il numero di tasti premuto (pressed) è uguale al numero di tasti da premere (count) allora si apre la porta
 				{
 
 					Open.Broadcast();
 					//Telaio->SetActorEnableCollision(ECollisionEnabled::NoCollision);
 				
-					if (Number1 != nullptr)
+					if (firstButtonPressed != nullptr)
 					{
-						Number1->FindComponentByClass<UPlatformMoviment>()->Door = nullptr;
+						firstButtonPressed->FindComponentByClass<UPlatformMoviment>()->Door = nullptr;
 					}
-					if (Number2 != nullptr)
+					if (secondButtonPressed != nullptr)
 					{
-						Number2->FindComponentByClass<UPlatformMoviment>()->Door = nullptr;
+						secondButtonPressed->FindComponentByClass<UPlatformMoviment>()->Door = nullptr;
 					}
-					if (Number3 != nullptr)
+					if (thirdButtonPressed != nullptr)
 					{
-						Number3->FindComponentByClass<UPlatformMoviment>()->Door = nullptr;
+						thirdButtonPressed->FindComponentByClass<UPlatformMoviment>()->Door = nullptr;
 					}
 					CanBeDestroy = true;//booleano che permette la distruzione delle ante quando finiscono il loro moviemnto di apertura
 				}
@@ -107,16 +105,16 @@ void UDoorComponent::TickComponent( float DeltaTime, ELevelTick TickType, FActor
 				//stampa della porta e del numero di pulsanti relativi a quella porta
 				/*UE_LOG(LogTemp,Warning,TEXT("Porta : %s"),*GetOwner()->GetName())
 				UE_LOG(LogTemp, Warning, TEXT(" Numero di pulsanti %d"), Count);
-				UE_LOG(LogTemp, Warning, TEXT(" Numero di pulsanti premuti %d"), Pressed);*/
+				UE_LOG(LogTemp, Warning, TEXT(" Numero di pulsanti premuti %d"), nextButtonIndex);*/
 			}
-			if (Pressed > 0)
+			if (nextButtonIndex > 0)
 			{
-				if (time2 + DelayPlatform < GetWorld()->GetTimeSeconds())
+				if (sequenceStartTime + DelayPlatform < GetWorld()->GetTimeSeconds())
 				{
-					Pressed = 0;
-					Number1 = nullptr;
-					Number2 = nullptr;
-					Number3 = nullptr;
+					nextButtonIndex = 0;
+					firstButtonPressed = nullptr;
+					secondButtonPressed = nullptr;
+					thirdButtonPressed = nullptr;
 				}
 			}
 
@@ -133,37 +131,20 @@ void UDoorComponent::TickComponent( float DeltaTime, ELevelTick TickType, FActor
 
 }
 
-void UDoorComponent::DoorMoviment(AActor * value)//controllo tasti premuti
+void UDoorComponent::HandlePlatformPressure(AActor * platform)//controllo tasti premuti
 {
-	if (Pressed == 0)//contatore che stabilisce il tasto da premere
+	if (platformSequence.Num() > nextButtonIndex)
 	{
-
-		if (value == Botton1)//se il tasto premuto è uguale al tasto da premere si aumenta il contatore dei tasti premuti
+		if (platform == platformSequence[nextButtonIndex])
 		{
-
-			time2 = GetWorld()->GetTimeSeconds();
-			ActivatePlatform(value);
-			//Number1 = value;   TODO: chiedere ad Alessandro cos'è!!!
-			
+			if (nextButtonIndex == 0)
+			{
+				sequenceStartTime = GetWorld()->GetTimeSeconds();
+			}
+			ActivatePlatform(platform);
+			nextButtonIndex++;
 		}
 	}
-	if (Pressed == 1)//contatore che stabilisce il tasto da premere
-	{
-		if (value == Botton2)//se il tasto premuto è uguale al tasto da premere si aumenta il contatore dei tasti premuti
-		{
-			//Number2 = value;
-			ActivatePlatform(value);
-		}
-	}
-	if (Pressed == 2)//contatore che stabilisce il tasto da premere
-	{
-		if (value == Botton3)//se il tasto premuto è uguale al tasto da premere si aumenta il contatore dei tasti premuti
-		{
-			//Number3 = value;
-			ActivatePlatform(value);
-		}
-	}
-
 }
 
 void UDoorComponent::DelayDestroy()
@@ -209,19 +190,19 @@ void UDoorComponent::OpenWithLeva()
 	Open.Broadcast();
 	
 
-		Botton1 = nullptr;
+		firstButton = nullptr;
 	
-		Botton2 = nullptr;
+		secondButton = nullptr;
 	
-		Botton3 = nullptr;
+		thirdButton = nullptr;
 	
 		DelayDestroy();//chaiamta della funzione che distrugge le porte
 	
 }
 
-void UDoorComponent::ActivatePlatform(AActor* value)
+void UDoorComponent::ActivatePlatform(AActor* platform)
 {
-	auto platformMovement = value->FindComponentByClass<UPlatformMoviment>();
+	auto platformMovement = platform->FindComponentByClass<UPlatformMoviment>();
 	if (platformMovement)
 	{
 		platformMovement->LightOn();
@@ -231,6 +212,5 @@ void UDoorComponent::ActivatePlatform(AActor* value)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Not Light"));
 	}
-	//value->FindComponentByClass<UPlatformMoviment>()->Door = nullptr;
-	Pressed++;
+	//platform->FindComponentByClass<UPlatformMoviment>()->Door = nullptr;
 }

@@ -19,7 +19,7 @@ public:
 
 	virtual void BeginPlay() override;
 	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
-	void SetTrue();//funzione chiamata dal player che serve a passare alla porta il tasto premuto
+	void HandlePressure();//funzione chiamata dal player che serve a passare alla porta il tasto premuto
 	
 	UFUNCTION(BlueprintCallable, Category = "Light")
 	void PlatformLightInit(UPlatformLight* platformInit);

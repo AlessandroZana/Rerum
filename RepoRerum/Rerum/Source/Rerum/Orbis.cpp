@@ -748,7 +748,7 @@ bool UOrbis::HeavyLightPlatform()//funzione che si occupa di riconoscere le piat
 
 				if (platform)
 				{
-					platform->FindComponentByClass<UPlatformMoviment>()->SetTrue();//chiamata della funzione settrue della piattaforma per l'apertura della porta
+					platform->FindComponentByClass<UPlatformMoviment>()->HandlePressure();//chiamata della funzione settrue della piattaforma per l'apertura della porta
 					UE_LOG(LogTemp, Warning, TEXT("Platform : %s "), *platform->GetName());
 
 				}
@@ -768,7 +768,7 @@ bool UOrbis::HeavyLightPlatform()//funzione che si occupa di riconoscere le piat
 
 				if (platform)
 				{
-					platform->FindComponentByClass<UPlatformMoviment>()->SetTrue();//chiamata della funzione settrue della piattaforma per l'apertura della porta
+					platform->FindComponentByClass<UPlatformMoviment>()->HandlePressure();//chiamata della funzione settrue della piattaforma per l'apertura della porta
 					UE_LOG(LogTemp, Warning, TEXT("Platform : %s "), *platform->GetName());
 				}
 				else
