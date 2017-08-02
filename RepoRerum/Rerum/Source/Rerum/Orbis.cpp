@@ -2,6 +2,7 @@
 
 #include "Rerum.h"
 #include "Orbis.h"
+#include "Rock.h"
 #include "DrawDebugHelpers.h"
 
 
@@ -307,7 +308,7 @@ void UOrbis::DestroyUp()//serve ad evitare che con il salto semplice si attivi i
 	{
 		if (CanDestroyUp == true)
 		{
-			UE_LOG(LogTemp, Warning, TEXT(" Rompo Oggetti up"));
+			//UE_LOG(LogTemp, Warning, TEXT(" Rompo Oggetti up"));
 
 			
 
@@ -381,7 +382,7 @@ void UOrbis::Dash()
 	//Var per attivare il dash di orbis
 	OnDash = true;
 	//state = EState::FlyingDash;
-	UE_LOG(LogTemp, Warning, TEXT("Dash"));
+	//UE_LOG(LogTemp, Warning, TEXT("Dash"));
 }
 
 void UOrbis::NotDash()
@@ -391,10 +392,10 @@ void UOrbis::NotDash()
 	{
 		OnDash = false;//attenzione questa funzione vale solo per la forma light in modo da risolvere il bug del dash
 		state = EState::NotFlyingDash;
-		UE_LOG(LogTemp, Warning, TEXT("Not Dash"));
+		//UE_LOG(LogTemp, Warning, TEXT("Not Dash"));
 	}
 	
-	UE_LOG(LogTemp, Warning, TEXT("Not Dash EV"));
+	//UE_LOG(LogTemp, Warning, TEXT("Not Dash EV"));
 }
 
 void UOrbis::CharacterOnDash()
@@ -712,7 +713,11 @@ bool UOrbis::StopRunCharacter()//funzione che gestisce gli impatti frontali del 
 		//UE_LOG(LogTemp, Warning, TEXT("FUNZIONE Static"));
 		if (!Hit.GetActor()->ActorHasTag("Leva"))
 		{
-			Hit.GetActor()->Destroy();
+			auto rock = Hit.GetActor()->FindComponentByClass<URock>();
+			if (rock)
+			{
+				rock->SetRockDestructionAnimation();
+			}
 
 		}
 		
@@ -749,7 +754,7 @@ bool UOrbis::HeavyLightPlatform()//funzione che si occupa di riconoscere le piat
 				if (platform)
 				{
 					platform->FindComponentByClass<UPlatformMoviment>()->HandlePressure();//chiamata della funzione settrue della piattaforma per l'apertura della porta
-					UE_LOG(LogTemp, Warning, TEXT("Platform : %s "), *platform->GetName());
+					//UE_LOG(LogTemp, Warning, TEXT("Platform : %s "), *platform->GetName());
 
 				}
 				else
@@ -769,7 +774,7 @@ bool UOrbis::HeavyLightPlatform()//funzione che si occupa di riconoscere le piat
 				if (platform)
 				{
 					platform->FindComponentByClass<UPlatformMoviment>()->HandlePressure();//chiamata della funzione settrue della piattaforma per l'apertura della porta
-					UE_LOG(LogTemp, Warning, TEXT("Platform : %s "), *platform->GetName());
+					//UE_LOG(LogTemp, Warning, TEXT("Platform : %s "), *platform->GetName());
 				}
 				else
 				{
@@ -924,10 +929,10 @@ void UOrbis::Action()
 {
 	if (CanUseAction)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Funzione action"));
+		//UE_LOG(LogTemp, Warning, TEXT("Funzione action"));
 		if (Leva != nullptr)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Utilizzo leva %s"), *Leva->GetName());
+			//UE_LOG(LogTemp, Warning, TEXT("Utilizzo leva %s"), *Leva->GetName());
 			CanChangeSpriteLeva = true;
 		}
 	}

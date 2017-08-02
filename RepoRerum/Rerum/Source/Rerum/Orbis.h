@@ -22,6 +22,8 @@ enum class EState : uint8
 	TransformToLight
 };
 
+class URock;
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class RERUM_API UOrbis : public UActorComponent
 {

@@ -77,7 +77,7 @@ void ARerumCharacter::CastToOrbis(UOrbis* orbisComponent)
 	orbis = orbisComponent;
 	if (orbis)
 	{
-		UE_LOG(LogTemp,Warning,TEXT("Orbis found"))
+		//UE_LOG(LogTemp,Warning,TEXT("Orbis found"))
 	}
 	else
 	{
