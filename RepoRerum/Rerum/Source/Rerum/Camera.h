@@ -39,7 +39,7 @@ public:
 		float MaxCameraZoomOut=500;//distanza massima dello zoom quando si usa il jetpack
 
 	UPROPERTY(EditAnywhere)
-		float LowZPosition=430;//posizione asse z minimo della telecamera
+		float LowZPosition=500;//posizione asse z minimo della telecamera
 
 	UPROPERTY(EditAnywhere)
 		float VelocitaDizoomOutTelecamera = 15;//Velocità dello spostamento/zoom out telecamera

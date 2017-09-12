@@ -61,7 +61,7 @@ void UCamera::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompone
 				player->FindComponentByClass<UOrbis>()->DisableInput();
 				if (Time + ComeBack < GetWorld()->GetTimeSeconds())
 				{
-					FVector Position = FVector(player->GetActorLocation().X, CameraY, player->GetActorLocation().Z + 60);//si setta l'fvector che poi diventrà la nuova posizione della camera
+					FVector Position = FVector(player->GetActorLocation().X, CameraY, player->GetActorLocation().Z + 90);//si setta l'fvector che poi diventrà la nuova posizione della camera
 
 					if (Position.Z < LowZPosition)//controllo che la z della camera non vada sotto un tot in modo da non vedere troppo sotto il terrono
 					{
@@ -79,7 +79,7 @@ void UCamera::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompone
 
 			//	UE_LOG(LogTemp, Warning, TEXT("Posizione della telecamera %s"), *GetOwner()->GetActorLocation().ToString());
 
-				FVector Position = FVector(player->GetActorLocation().X, positionY, player->GetActorLocation().Z + 60);//si setta l'fvector che poi diventrà la nuova posizione della camera
+				FVector Position = FVector(player->GetActorLocation().X, positionY, player->GetActorLocation().Z + 90);//si setta l'fvector che poi diventrà la nuova posizione della camera
 
 				if (Position.Z < LowZPosition)//controllo che la z della camera non vada sotto un tot in modo da non vedere troppo sotto il terrono
 				{
@@ -112,10 +112,10 @@ void UCamera::MoveCamera()
 		if (NuovaPosizione)
 		{
 			IsMoving = true;
-			FVector Position = FVector(NuovaPosizione->GetActorLocation().X, GetOwner()->GetActorLocation().Y + MaxCameraDistance, NuovaPosizione->GetActorLocation().Z + 60);
-			if (Position.Z < 500)//controllo che la z della camera non vada sotto un tot in modo da non vedere troppo sotto il terrono
+			FVector Position = FVector(NuovaPosizione->GetActorLocation().X, GetOwner()->GetActorLocation().Y + MaxCameraDistance, NuovaPosizione->GetActorLocation().Z + 90);
+			if (Position.Z < 1000)//controllo che la z della camera non vada sotto un tot in modo da non vedere troppo sotto il terrono
 			{
-				Position.Z = 500;
+				Position.Z = 1000;
 			}
 			GetOwner()->SetActorLocation(Position, false, nullptr);
 			Time = GetWorld()->GetTimeSeconds();
@@ -132,7 +132,7 @@ void UCamera::CameraZoomIn()
 {
 	if (IsUsingJetpack == true)//questa funzione viene richiamata quando il player non è più in aria ma viene fatto prima un controllo per verificare che sia stato usato il jetpack 
 	{
-		FVector Position = FVector(player->GetActorLocation().X, CameraY, player->GetActorLocation().Z + 60);//si setta l'fvector che poi diventrà la nuova posizione della camera
+		FVector Position = FVector(player->GetActorLocation().X, CameraY, player->GetActorLocation().Z + 90);//si setta l'fvector che poi diventrà la nuova posizione della camera
 
 		if (Position.Z < LowZPosition)//controllo che la z della camera non vada sotto un tot in modo da non vedere troppo sotto il terrono
 		{
@@ -151,7 +151,7 @@ void UCamera::CameraZoomOut()
 	if (IsUsingJetpack == false || CantBlockit == true)//doppio booleano uno per determinare l'inizio del uso jetpack e l'altro per impedire che altre funzioni lavorino sulla telecamera
 	{
 		
-		FVector Position = FVector(player->GetActorLocation().X,positionY, player->GetActorLocation().Z + 60);//si setta l'fvector che poi diventrà la nuova posizione della camera
+		FVector Position = FVector(player->GetActorLocation().X,positionY, player->GetActorLocation().Z + 90);//si setta l'fvector che poi diventrà la nuova posizione della camera
 
 		if (Position.Z < LowZPosition)//controllo che la z della camera non vada sotto un tot in modo da non vedere troppo sotto il terrono
 		{
